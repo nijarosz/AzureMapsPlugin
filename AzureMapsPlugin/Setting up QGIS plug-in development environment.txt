@@ -1,0 +1,72 @@
+based on http://spatialgalaxy.net/2014/10/09/a-quick-guide-to-getting-started-with-pyqgis-on-windows/
+
+Uninstall QGIS if you've installed it from standalone installer. We're going to use the
+OSGeo4W installer instead.
+
+Install 32-bit osgeo4w from http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86.exe
+  Choose Advanced install
+  Accept defaults unless otherwise mentioned below
+  Install to C:/OSGeo4W
+  From Select Packages screen, choose
+    Desktop -> qgis: QGIS Desktop
+    Desktop -> Grass
+    Libs -> qt5-devel
+    Libs -> Python3 setuptools
+
+Change some scripts to Python37 instead of Python27
+  C:/OSGeo4w/etc/ini/python-core.bat
+  C:/OSGeo4W/apps/grass/grass76/etc/env.bat
+
+Rename C:/OSGeo4W/etc/ini/qt4.bat to qt4.bat.old
+
+Create pyqgis.cmd wherever you want:
+
+rem @echo off
+set OSGEO4W_ROOT=C:\OSGeo4W
+set GRASS_VER=76
+set PYTHON_VER=37
+call %OSGEO4W_ROOT%\bin\o4w_env.bat
+call %OSGEO4W_ROOT%\bin\qt5_env.bat
+call %OSGEO4W_ROOT%\apps\grass\grass%GRASS_VER%\etc\env.bat
+path %PATH%;%OSGEO4W_ROOT%\apps\qgis\bin
+path %PATH%;%OSGEO4W_ROOT%\apps\grass\grass%GRASS_VER%\lib
+set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\qgis\python
+set PYTHONPATH=%PYTHONPATH%;%OSGEO4W_ROOT%\apps\Python%PYTHON_VER%\Lib\site-packages
+set QGIS_PREFIX_PATH=%OSGEO4W_ROOT%\apps\qgis
+set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
+cmd
+
+Run it
+
+From that command prompt, test everything out:
+  C:>python3
+  >>> import qgis.core
+  >>> [Ctrl-Z] [Enter]
+
+From same command prompt, install pb_tool
+  Install pip using command "easy_install pip"
+  Install pb_tool using command "pip install pb_tool"
+
+Install Python ADAL (specifically for the Azure Maps plugin)
+  "pip install adal"
+  "pip install msrestazure"
+
+Prepare QGIS for plugin development
+  Launch QGIS from C:/OSGeo4w/bin/qgis-bin.exe (or use command "qg")
+  Enable experimental plugins (Plugins -> Manage -> Settings -> Show also experimental plugins)
+  Install Plugin Reloader plugin.
+
+Optional: create a new plugin
+  Install Plugin Builder 3 plugin in QGIS.
+  Use Plugin Builder 3 to create a plugin. Make a note of where you created it.
+
+Build and deploy
+  Make sure you're at a command prompt with the pyqgis.cmd environment settings
+  Run "pb_tool deploy -y" from your plugin folder to build and install it (or use command "pb")
+  First time only: Enable it in QGIS plugin menu, which will add a button to the toolbar
+  Try it out by clicking the button
+
+Edit your UI
+  Make sure you're at a command prompt with the pyqgis.cmd environment settings.
+  Launch Qt5 designer from C:\OSGeo4W\apps\Qt5\bin\designer.exe (or use command "qt")
+  Open the *.ui file in your plugin source code folder
