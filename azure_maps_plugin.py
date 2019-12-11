@@ -387,7 +387,7 @@ class AzureMapsPlugin:
 
             self.set_private_atlas_status("Adding private atlas attributes")
 
-            level_to_ordinal = {level["id"]: level["ordinal"] for level in level_layer.getFeatures()}
+            self.level_to_ordinal = {level["id"]: level["ordinal"] for level in level_layer.getFeatures()}
 
             # Level layer
             floor_index = self.add_helper_attributes(level_layer)
@@ -407,7 +407,7 @@ class AzureMapsPlugin:
             space_to_ordinals = {}
             for feature in unit_layer.getFeatures():
                 level_id = feature["level_id"]
-                ordinal = level_to_ordinal[level_id]
+                ordinal = self.level_to_ordinal[level_id]
                 floor = ordinal
                 unit_layer.changeAttributeValue(feature.id(), floor_index, floor)
                 space_to_floors[feature["id"]] = floor
@@ -433,7 +433,7 @@ class AzureMapsPlugin:
                 floor_index = self.add_helper_attributes(vertical_penetration_layer)
                 for feature in vertical_penetration_layer.getFeatures():
                     level_id = feature["level_id"]
-                    floor = level_to_ordinal[level_id]
+                    floor = self.level_to_ordinal[level_id]
                     vertical_penetration_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
                 self.add_layer_events(vertical_penetration_layer, id_map, collection_meta)
 
@@ -442,7 +442,7 @@ class AzureMapsPlugin:
                 floor_index = self.add_helper_attributes(opening_layer)
                 for feature in opening_layer.getFeatures():
                     level_id = feature["level_id"]
-                    floor = level_to_ordinal[level_id]
+                    floor = self.level_to_ordinal[level_id]
                     opening_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
                 self.add_layer_events(opening_layer, id_map, collection_meta)
                 opening_layer.loadNamedStyle(self.plugin_dir + "/styles/opening.qml")
@@ -694,13 +694,49 @@ class AzureMapsPlugin:
         # Submit the changes to the server.
         data = '{"type": "FeatureCollection","features":[' + str.join(", ", features) + ']}'
 
-        # Temporarily use localhost until we've deployed.
+        # Call Azure Maps patch service to update layer.
         url = self.wfs_url
         r = requests.patch(url + "collections/" + layer.name() + self.query_string, data = data, headers = {"content-type":"application/geo+json"}, verify=False)
         print(r.request.body)
         print(r.request.url)
         print(r.status_code)
-        layer.dataProvider().forceReload()
+        
+        # Use message box to alert user of success or failure
+        if r.status_code != 200:
+            print(r.json()['error']['message'])
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Save to " + layer.name() + " layer has failed!")
+            msg.setInformativeText("Edits, deletes or creates have not been saved to your database. Please fix the issues and try saving again.")
+            msg.setWindowTitle("Save Failed!")
+            msg.setDetailedText("Error message from Azure Maps: " + r.json()['error']['message'])
+            msg.exec()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Save to " + layer.name() + " layer has succeeded!")
+            msg.setInformativeText("Your edits have been saved to the database.")
+            msg.setWindowTitle("Save Successful!")
+            msg.exec()
+        
+        floor_index = layer.dataProvider().fieldNameIndex("floor")
+
+        # If floor attribute is found, update floor to updated or created value
+        if floor_index != -1:
+            for fid in adds:
+                level_id = layer.getFeature(fid)["level_id"]
+                if level_id is not None:
+                    floor = self.level_to_ordinal[level_id]
+                    if floor is not None:
+                        
+                        layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
+        
+            for fid in changes:
+                level_id = layer.getFeature(fid)["level_id"]
+                if level_id is not None:
+                    floor = self.level_to_ordinal[level_id]
+                    if floor is not None:
+                        layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
 
     #def authenticate_device_code(self, tenant, client_id):
 
