@@ -184,8 +184,8 @@ class AzureMapsPlugin:
             callback=self.run,
             parent=self.iface.mainWindow())
 
-        self.floor_picker_widget = AzureMapsFloorPicker(self.iface, self.iface.mainWindow())
-        self.iface.addDockWidget(Qt.RightDockWidgetArea, self.floor_picker_widget)
+        #self.floor_picker_widget = AzureMapsFloorPicker(self.iface, self.iface.mainWindow())
+        #self.iface.addDockWidget(Qt.RightDockWidgetArea, self.floor_picker_widget)
 
         # will be set False in run()
         self.first_start = True
@@ -199,7 +199,7 @@ class AzureMapsPlugin:
                 action)
             self.iface.removeToolBarIcon(action)
 
-        self.iface.removeDockWidget(self.floor_picker_widget)
+        #self.iface.removeDockWidget(self.floor_picker_widget)
 
 
     def run(self):
@@ -212,7 +212,7 @@ class AzureMapsPlugin:
             self.dlg = AzureMapsPluginDialog(self.iface)
             self.dlg.getFeaturesButton.clicked.connect(self.get_features_clicked)
             self.picker_floors = []
-            self.floor_picker_widget.floorPicker.currentIndexChanged.connect(self.floor_picker_changed)
+            self.dlg.floorPicker.currentIndexChanged.connect(self.floor_picker_changed)
 
         # show the dialog
         self.dlg.show()
@@ -240,7 +240,7 @@ class AzureMapsPlugin:
 
 
     def get_features_clicked(self):
-
+        self.dlg.getFeaturesButton.setEnabled(False)
         # Determine host name.
         if self.dlg.frontDoorButton.isChecked():
             if self.dlg.stgButton.isChecked():
@@ -379,7 +379,8 @@ class AzureMapsPlugin:
                     facility_layer = layer
                 elif name == "vertical_penetration":
                     vertical_penetration_layer = layer
-            
+                elif name == "zone":
+                    zone_layer = layer
             if level_layer is None or unit_layer is None:
                 self.set_private_atlas_status("One or more required collections is missing")
                 return
@@ -398,7 +399,7 @@ class AzureMapsPlugin:
                     self.picker_floors.append(ordinal)
 
             self.add_layer_events(level_layer, id_map, collection_meta)
-            #level_layer.loadNamedStyle(self.plugin_dir + "/styles/level.qml")
+            level_layer.loadNamedStyle(self.plugin_dir + "/styles/level.qml")
 
             # Space layer
             floor_index = self.add_helper_attributes(unit_layer)
@@ -413,10 +414,10 @@ class AzureMapsPlugin:
                 space_to_ordinals[feature["id"]] = ordinal
 
             self.add_layer_events(unit_layer, id_map, collection_meta)
-            #unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
+            unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
 
             #list_widget = QgsEditorWidgetSetup("List", {})
-            #unit_layer.setEditorWidgetSetup(7, list_widget)
+            #unit_layer.setEditorWidgetSetup(4, list_widget)
 
             # Area element layer
             self.add_floors_values(area_element_layer, id_map, space_to_floors, collection_meta)
@@ -444,24 +445,26 @@ class AzureMapsPlugin:
                     floor = level_to_ordinal[level_id]
                     opening_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
                 self.add_layer_events(opening_layer, id_map, collection_meta)
-                #opening_layer.loadNamedStyle(self.plugin_dir + "/styles/opening.qml")
+                opening_layer.loadNamedStyle(self.plugin_dir + "/styles/opening.qml")
 
             if facility_layer is not None:
-                facility_layer.startEditing()
-                for feature in facility_layer.getFeatures():
-                    facility_layer.changeAttributeValue(feature.id(), 5, "Test")
-                provider = facility_layer.dataProvider() 
-                field = QgsField("Test", QVariant.String)
-                provider.addAttributes([field])           
-                facility_layer.updateFields()
                 self.add_layer_events(facility_layer, id_map, collection_meta)
+
+            if category_level is not None:
+                self.add_layer_events(category_level, id_map, collection_meta)
+
+            if directory_info_layer is not None:
+                self.add_layer_events(directory_info_layer, id_map, collection_meta)
+
+            if zone_layer is not None:
+                self.add_layer_events(zone_layer, id_map, collection_meta)
 
             # Floor picker
             self.picker_floors.sort()
-            self.floor_picker_widget.floorPicker.clear()
+            self.dlg.floorPicker.clear()
 
             for ordinal in self.picker_floors:
-                self.floor_picker_widget.floorPicker.addItem(str(ordinal))
+                self.dlg.floorPicker.addItem(str(ordinal))
 
             if level_layer is None or unit_layer is None:
                 self.set_private_atlas_status("One or more required collections is missing")
@@ -472,6 +475,7 @@ class AzureMapsPlugin:
             self.iface.mapCanvas().setDestinationCrs(canvas_crs)
 
             self.set_private_atlas_status("")
+            self.dlg.getFeaturesButton.setEnabled(True)
 
 
     # Adds floors and name attributes and returns the index of the first field added (floors).
@@ -653,7 +657,6 @@ class AzureMapsPlugin:
             collection_ids.append(wid)
 
     def on_before_commit_changes(self, layer, id_map):
-
         edits = layer.editBuffer()
         deletes = edits.deletedFeatureIds()
         adds = edits.addedFeatures()

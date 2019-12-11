@@ -457,6 +457,54 @@ S</string>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="FloorPickerWidget">
+      <attribute name="title">
+       <string>&amp;Floor Picker</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Floor Picker</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+        <widget class="QLabel" name="label_2">
+        <property name="text">
+        <string>Floor ordinal</string>
+        </property>
+        </widget>
+        </item>
+        <item>
+        <widget class="QComboBox" name="floorPicker"/>
+        </item>
+        </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
