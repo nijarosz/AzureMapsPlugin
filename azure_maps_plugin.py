@@ -292,9 +292,9 @@ class AzureMapsPlugin:
         r = self.get_url(self.wfs_url + "collections" + self.query_string)
 
         if r.status_code != 200:
-
             self.set_private_atlas_status("Can't get features. Status code=" + str(r.status_code))
             self.iface.messageBar().pushMessage("Error", "Unable to read dataset metadata. Response status code " + str(r.status_code) + ". " + r.text, level = Qgis.Critical)
+            self.dlg.getFeaturesButton.setEnabled(True)
             
         else: # If successful, get all the layers.
 
@@ -358,7 +358,10 @@ class AzureMapsPlugin:
                 # Get collection items.
                 href = self.patch(data_link["href"])
                 layer = self.load_items(name, href + bbox, group, id_map)
-
+                if layer is None:
+                    group.removeAllChildren()
+                    return
+                
                 if name == "level":
                     level_layer = layer
                 elif name == "category":
@@ -414,7 +417,7 @@ class AzureMapsPlugin:
                 space_to_ordinals[feature["id"]] = ordinal
 
             self.add_layer_events(unit_layer, id_map, collection_meta)
-            unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
+            #unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
 
             #list_widget = QgsEditorWidgetSetup("List", {})
             #unit_layer.setEditorWidgetSetup(4, list_widget)
@@ -547,6 +550,8 @@ class AzureMapsPlugin:
 
         if r.status_code != 200:
             self.iface.messageBar().pushMessage("Error", "Unable to read collection. Response status code " + str(r.status_code) + ". " + r.text, level = Qgis.Critical)
+            self.dlg.getFeaturesButton.setEnabled(True)
+            return
 
         while r.status_code == 200:
 
@@ -580,8 +585,9 @@ class AzureMapsPlugin:
                     layer = maplayer[0]
                 else:
                     layer = QgsVectorLayer(wkt + "?crs=" + crs + "&index=yes", name, "memory")
-                layer.dataProvider().addAttributes(new_layer.dataProvider().fields().toList())    
-                    
+
+                # Add fields to layer
+                layer.dataProvider().addAttributes(new_layer.dataProvider().fields().toList())
                 
                 QgsProject.instance().addMapLayer(layer, False)
                 group.addLayer(layer)
@@ -593,12 +599,30 @@ class AzureMapsPlugin:
 
                 for new_feat in new_layer.getFeatures():
                     feat = QgsFeature()
-                    #print(new_feat.attributes())
-                    feat.setAttributes(new_feat.attributes())
+                    #print(feat.attributes())
+                    feat.setFields(new_feat.fields())
+                    for field in new_feat.fields().toList():
+                        feat.setAttribute(new_feat.fieldNameIndex(field.name()), new_feat.attribute(field.name()))
+                    #feat.setAttributes(new_feat.attributes())
                     feat.setGeometry(new_feat.geometry())
                     layer.addFeature(feat)
-
+                # Remove anchor_point and obstruction_area until save is fixed with them
+                attrIndexesToBeRemoved = []
+                obstructionAreaIndex = layer.dataProvider().fieldNameIndex("obstruction_area")
+                if obstructionAreaIndex != -1:
+                    attrIndexesToBeRemoved.append(obstructionAreaIndex)
+                anchorIndex = layer.dataProvider().fieldNameIndex("anchor_point")
+                if anchorIndex != -1:
+                    attrIndexesToBeRemoved.append(anchorIndex)
+                if len(attrIndexesToBeRemoved) != 0:
+                    result = layer.dataProvider().deleteAttributes(attrIndexesToBeRemoved)
+                    layer.updateFields()
+                
                 layer.commitChanges()
+
+                anchorIndex = layer.dataProvider().fieldNameIndex("anchor_point")
+                if anchorIndex != -1:
+                    print("layer STILL has anchor_point")
 
                 for feature in layer.getFeatures():
                     id_map[layer.name() + ":" + str(feature.id())] = feature["id"]
@@ -718,6 +742,7 @@ class AzureMapsPlugin:
             msg.setInformativeText("Your edits have been saved to the database.")
             msg.setWindowTitle("Save Successful!")
             msg.exec()
+            layer.commitChanges()
         
         floor_index = layer.dataProvider().fieldNameIndex("floor")
 
