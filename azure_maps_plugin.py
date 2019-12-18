@@ -230,6 +230,7 @@ class AzureMapsPlugin:
                         layer.rollBack()
                         layer.setSubsetString("floor = " + ordinal)
                     if "levels" in [field.name() for field in layer.fields()]:
+                        layer.rollBack()
                         layer.setSubsetString("array_contains(levels, '"+self.ordinal_to_level[int(ordinal)]+"')")
         return
 
@@ -411,14 +412,14 @@ class AzureMapsPlugin:
 
             # Space layer
             floor_index = self.add_helper_attributes(unit_layer)
-            space_to_floors = {}
+            self.space_to_floors = {}
             space_to_ordinals = {}
             for feature in unit_layer.getFeatures():
                 level_id = feature["level_id"]
                 ordinal = self.level_to_ordinal[level_id]
                 floor = ordinal
                 unit_layer.changeAttributeValue(feature.id(), floor_index, floor)
-                space_to_floors[feature["id"]] = floor
+                self.space_to_floors[feature["id"]] = floor
                 space_to_ordinals[feature["id"]] = ordinal
 
             self.add_widget(unit_layer, "navigable_by", "List")  
@@ -429,13 +430,19 @@ class AzureMapsPlugin:
             #unit_layer.setEditorWidgetSetup(4, list_widget)
 
             # Area element layer
-            self.add_floors_values(area_element_layer, id_map, space_to_floors, collection_meta)
+            self.add_floors_values(area_element_layer, id_map, self.space_to_floors, collection_meta)
+            self.add_widget(area_element_layer, "name_alt", "TextEdit") 
+            self.add_widget(area_element_layer, "name_subtitle", "TextEdit")
 
             # Line element layer
-            self.add_floors_values(line_element_layer, id_map, space_to_floors, collection_meta)
+            self.add_floors_values(line_element_layer, id_map, self.space_to_floors, collection_meta)
+            self.add_widget(line_element_layer, "name_alt", "TextEdit") 
+            self.add_widget(line_element_layer, "name_subtitle", "TextEdit")
 
             # Point element layer
-            self.add_floors_values(point_element_layer, id_map, space_to_floors, collection_meta)
+            self.add_floors_values(point_element_layer, id_map, self.space_to_floors, collection_meta)
+            self.add_widget(point_element_layer, "name_alt", "TextEdit") 
+            self.add_widget(point_element_layer, "name_subtitle", "TextEdit")
 
             # Vertical Penetration layer
             if vertical_penetration_layer is not None:
@@ -472,6 +479,8 @@ class AzureMapsPlugin:
                 self.add_layer_events(directory_info_layer, id_map, collection_meta)
 
             if zone_layer is not None:
+                self.add_widget(zone_layer, "name_alt", "TextEdit") 
+                self.add_widget(zone_layer, "name_subtitle", "TextEdit")
                 self.add_widget(zone_layer, "levels", "List")  
                 self.add_layer_events(zone_layer, id_map, collection_meta)
 
@@ -531,7 +540,7 @@ class AzureMapsPlugin:
             if unit_id is not None:
                 # unit_id = json.loads(unit_id)
                 # unit_id = str(unit_id["prefix"]) + str(unit_id["id"])
-                floor = space_to_floors.get(unit_id, None)
+                floor = self.space_to_floors.get(unit_id, None)
                 if floor is not None:
                     layer.changeAttributeValue(feature.id(), floor_index, str(floor))
 
@@ -784,11 +793,10 @@ class AzureMapsPlugin:
                 elif feature.fieldNameIndex("unit_id") != -1:
                     unit_id = feature["unit_id"]
                     if unit_id is not None:
-                        floor = space_to_floors.get(unit_id, None)
+                        floor = self.space_to_floors.get(unit_id, None)
                         if floor is not None:
-                            layer.changeAttributeValue(layer.getFeature(fid), floor_index, str(floor))
+                            layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
                 elif feature.fieldNameIndex("ordinal") != -1:
-                    print("update ordinal for level")
                     ordinal = feature["ordinal"]
                     if ordinal is not None:
                         layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(ordinal))

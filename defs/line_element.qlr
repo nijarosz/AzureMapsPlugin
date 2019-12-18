@@ -2,7 +2,7 @@
 <qlr>
   <layer-tree-group checked="Qt::Checked" name="" expanded="1">
     <customproperties/>
-    <layer-tree-layer checked="Qt::Checked" id="line_element_a9aff05d_b19c_4f6c_b708_0215ce6cf251" name="line_element" providerKey="memory" expanded="1" source="memory?geometry=LineString&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)">
+    <layer-tree-layer checked="Qt::Checked" id="line_element_a9aff05d_b19c_4f6c_b708_0215ce6cf251" name="line_element" providerKey="memory" expanded="1" source="memory?geometry=LineString&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)&amp;field=name:String(0,0)">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
@@ -15,7 +15,7 @@
         <ymax>42.25932000000000244</ymax>
       </extent>
       <id>line_element_a9aff05d_b19c_4f6c_b708_0215ce6cf251</id>
-      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)</datasource>
+      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)&amp;field=name:String(0,0)</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -157,20 +157,6 @@
             </config>
           </editWidget>
         </field>
-        <field name="name_subtitle">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
-        <field name="name_alt">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
       </fieldConfiguration>
       <aliases>
         <alias field="id" name="" index="0"/>
@@ -179,8 +165,6 @@
         <alias field="unit_id" name="" index="3"/>
         <alias field="is_obstruction" name="" index="4"/>
         <alias field="name" name="" index="5"/>
-        <alias field="name_subtitle" name="" index="6"/>
-        <alias field="name_alt" name="" index="7"/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
@@ -191,18 +175,14 @@
         <default expression="" field="unit_id" applyOnUpdate="0"/>
         <default expression="" field="is_obstruction" applyOnUpdate="0"/>
         <default expression="" field="name" applyOnUpdate="0"/>
-        <default expression="" field="name_subtitle" applyOnUpdate="0"/>
-        <default expression="" field="name_alt" applyOnUpdate="0"/>
       </defaults>
       <constraints>
-        <constraint notnull_strength="1" field="id" unique_strength="2" exp_strength="0" constraints="3"/>
+        <constraint notnull_strength="0" field="id" unique_strength="2" exp_strength="0" constraints="2"/>
         <constraint exp_strength="0" field="original_id" constraints="0" unique_strength="0" notnull_strength="0"/>
-        <constraint exp_strength="0" field="category_id" constraints="0" unique_strength="0" notnull_strength="0"/>
-        <constraint exp_strength="0" field="unit_id" constraints="0" unique_strength="0" notnull_strength="0"/>
+        <constraint exp_strength="0" field="category_id" constraints="1" unique_strength="0" notnull_strength="1"/>
+        <constraint exp_strength="0" field="unit_id" constraints="1" unique_strength="0" notnull_strength="1"/>
         <constraint exp_strength="0" field="is_obstruction" constraints="0" unique_strength="0" notnull_strength="0"/>
-        <constraint exp_strength="0" field="name" constraints="0" unique_strength="0" notnull_strength="0"/>
-        <constraint exp_strength="0" field="name_subtitle" constraints="0" unique_strength="0" notnull_strength="0"/>
-        <constraint exp_strength="0" field="name_alt" constraints="0" unique_strength="0" notnull_strength="0"/>
+        <constraint exp_strength="0" field="name" constraints="1" unique_strength="0" notnull_strength="1"/>
       </constraints>
       <constraintExpressions>
         <constraint desc="" field="id" exp=""/>
@@ -211,8 +191,6 @@
         <constraint desc="" field="unit_id" exp=""/>
         <constraint desc="" field="is_obstruction" exp=""/>
         <constraint desc="" field="name" exp=""/>
-        <constraint desc="" field="name_subtitle" exp=""/>
-        <constraint desc="" field="name_alt" exp=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>

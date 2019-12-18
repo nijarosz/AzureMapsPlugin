@@ -192,7 +192,7 @@
         <default applyOnUpdate="0" field="name" expression=""/>
       </defaults>
       <constraints>
-        <constraint notnull_strength="1" field="id" unique_strength="2" exp_strength="0" constraints="3"/>
+        <constraint notnull_strength="0" field="id" unique_strength="2" exp_strength="0" constraints="2"/>
         <constraint notnull_strength="0" field="original_id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="facility_id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="ordinal" unique_strength="0" exp_strength="0" constraints="0"/>
