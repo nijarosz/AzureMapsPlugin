@@ -227,6 +227,7 @@ class AzureMapsPlugin:
                 if isinstance(child, QgsLayerTreeLayer):
                     layer = child.layer()
                     if "floor" in [field.name() for field in layer.fields()]:
+                        layer.rollBack()
                         layer.setSubsetString("floor = " + ordinal)
                     if "levels" in [field.name() for field in layer.fields()]:
                         layer.setSubsetString("array_contains(levels, '"+self.ordinal_to_level[int(ordinal)]+"')")
@@ -298,7 +299,7 @@ class AzureMapsPlugin:
             self.dlg.getFeaturesButton.setEnabled(True)
             
         else: # If successful, get all the layers.
-
+            self.picker_floors = []
             # Group the layers together.
             root = QgsProject.instance().layerTreeRoot()
             group_name = geodatabase_id + bbox
