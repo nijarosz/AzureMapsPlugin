@@ -221,15 +221,16 @@ class AzureMapsPlugin:
 
 
     def floor_picker_changed(self, index):
-        if index >= 0 and index < len(self.picker_floors):
-            ordinal = str(self.picker_floors[index])
-            for group in QgsProject.instance().layerTreeRoot().children():
-                for child in group.children():
-                    if isinstance(child, QgsLayerTreeLayer):
-                        layer = child.layer()
-                        
-                        if "floor" in [field.name() for field in layer.fields()]:
-                            layer.setSubsetString("floor = " + ordinal)
+        ordinal = str(self.picker_floors[index])
+        for group in QgsProject.instance().layerTreeRoot().children():
+            for child in group.children():
+                if isinstance(child, QgsLayerTreeLayer):
+                    layer = child.layer()
+                    if "floor" in [field.name() for field in layer.fields()]:
+                        layer.setSubsetString("floor = " + ordinal)
+                    if "levels" in [field.name() for field in layer.fields()]:
+                        layer.setSubsetString("array_contains(levels, '"+self.ordinal_to_level[int(ordinal)]+"')")
+        return
 
                             
 
@@ -336,7 +337,6 @@ class AzureMapsPlugin:
             for name in collection_order + other_collections:
                 # Find collection in API definition.
                 collection = next(c for c in collections if c["name"] == name)
-                print(name)
                 links = collection["links"]
 
                 # Get link to item data for collection.
@@ -360,6 +360,8 @@ class AzureMapsPlugin:
                 layer = self.load_items(name, href + bbox, group, id_map)
                 if layer is None:
                     group.removeAllChildren()
+                    self.set_private_atlas_status("Failed to load collections. Please try again")
+                    self.dlg.getFeaturesButton.setEnabled(True)
                     return
                 
                 if name == "level":
@@ -384,14 +386,14 @@ class AzureMapsPlugin:
                     vertical_penetration_layer = layer
                 elif name == "zone":
                     zone_layer = layer
-            if level_layer is None or unit_layer is None:
-                self.set_private_atlas_status("One or more required collections is missing")
+            if level_layer is None or len(level_layer) == 0 or unit_layer is None:
+                self.set_private_atlas_status("One or more required collections is missing. Please try again")
+                self.dlg.getFeaturesButton.setEnabled(True)
                 return
-
             self.set_private_atlas_status("Adding private atlas attributes")
 
             self.level_to_ordinal = {level["id"]: level["ordinal"] for level in level_layer.getFeatures()}
-
+            self.ordinal_to_level = {level["ordinal"]: level["id"] for level in level_layer.getFeatures()}
             # Level layer
             floor_index = self.add_helper_attributes(level_layer)
             for feature in level_layer.getFeatures():
@@ -402,6 +404,8 @@ class AzureMapsPlugin:
                     self.picker_floors.append(ordinal)
 
             self.add_layer_events(level_layer, id_map, collection_meta)
+            self.add_widget(level_layer, "name_alt", "TextEdit") 
+            self.add_widget(level_layer, "name_subtitle", "TextEdit")
             level_layer.loadNamedStyle(self.plugin_dir + "/styles/level.qml")
 
             # Space layer
@@ -416,6 +420,7 @@ class AzureMapsPlugin:
                 space_to_floors[feature["id"]] = floor
                 space_to_ordinals[feature["id"]] = ordinal
 
+            self.add_widget(unit_layer, "navigable_by", "List")  
             self.add_layer_events(unit_layer, id_map, collection_meta)
             #unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
 
@@ -438,6 +443,7 @@ class AzureMapsPlugin:
                     level_id = feature["level_id"]
                     floor = self.level_to_ordinal[level_id]
                     vertical_penetration_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
+                self.add_widget(vertical_penetration_layer, "navigable_by", "List") 
                 self.add_layer_events(vertical_penetration_layer, id_map, collection_meta)
 
             # Opening layer
@@ -447,19 +453,25 @@ class AzureMapsPlugin:
                     level_id = feature["level_id"]
                     floor = self.level_to_ordinal[level_id]
                     opening_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
+                self.add_widget(opening_layer, "navigable_by", "List")  
+                self.add_widget(opening_layer, "access_right_to_left", "List")  
+                self.add_widget(opening_layer, "access_left_to_right", "List")  
                 self.add_layer_events(opening_layer, id_map, collection_meta)
                 opening_layer.loadNamedStyle(self.plugin_dir + "/styles/opening.qml")
 
             if facility_layer is not None:
+                self.add_widget(facility_layer, "occupants", "List") 
                 self.add_layer_events(facility_layer, id_map, collection_meta)
 
             if category_level is not None:
                 self.add_layer_events(category_level, id_map, collection_meta)
 
             if directory_info_layer is not None:
+                self.add_widget(directory_info_layer, "admin_divisions", "List") 
                 self.add_layer_events(directory_info_layer, id_map, collection_meta)
 
             if zone_layer is not None:
+                self.add_widget(zone_layer, "levels", "List")  
                 self.add_layer_events(zone_layer, id_map, collection_meta)
 
             # Floor picker
@@ -477,19 +489,35 @@ class AzureMapsPlugin:
             canvas_crs = QgsCoordinateReferenceSystem(3857)
             self.iface.mapCanvas().setDestinationCrs(canvas_crs)
 
-            self.set_private_atlas_status("")
+            self.set_private_atlas_status("Load complete")
             self.dlg.getFeaturesButton.setEnabled(True)
+            
 
+    def add_widget(self, layer, fieldName, widgetType):
+        levelsIndex = layer.dataProvider().fieldNameIndex(fieldName)
+        if levelsIndex == -1:
+            layer.startEditing()
+            list_widget = QgsEditorWidgetSetup(widgetType, {})
+            field = QgsField(fieldName, QVariant.String)
+            layer.dataProvider().addAttributes([field])        
+            layer.updateFields()
+            layer.setEditorWidgetSetup(layer.dataProvider().fieldNameIndex(fieldName), list_widget)  
 
     # Adds floors and name attributes and returns the index of the first field added (floors).
     def add_helper_attributes(self, layer):
-        layer.startEditing()
-        provider = layer.dataProvider() 
-        field = QgsField("floor", QVariant.String)
-        provider.addAttributes([field])           
-        layer.updateFields()
-        return max(provider.attributeIndexes())
-
+        floor = layer.dataProvider().fieldNameIndex("floor")
+        if floor == -1:
+            layer.startEditing()
+            provider = layer.dataProvider() 
+            field = QgsField("floor", QVariant.String)
+            provider.addAttributes([field])           
+            layer.updateFields()
+            hiddenWidget = QgsEditorWidgetSetup("Hidden", {})
+            layer.setEditorWidgetSetup(max(provider.attributeIndexes()), hiddenWidget)
+            #print(provider.fields()[max(provider.attributeIndexes())].editorWidgetSetup().type())   
+            return max(provider.attributeIndexes())
+        else:
+            return floor
 
     def add_floors_values(self, layer, id_map, space_to_floors, collection_meta):
         if layer is None:
@@ -585,7 +613,6 @@ class AzureMapsPlugin:
                     layer = maplayer[0]
                 else:
                     layer = QgsVectorLayer(wkt + "?crs=" + crs + "&index=yes", name, "memory")
-
                 # Add fields to layer
                 layer.dataProvider().addAttributes(new_layer.dataProvider().fields().toList())
                 
@@ -617,12 +644,7 @@ class AzureMapsPlugin:
                 if len(attrIndexesToBeRemoved) != 0:
                     result = layer.dataProvider().deleteAttributes(attrIndexesToBeRemoved)
                     layer.updateFields()
-                
                 layer.commitChanges()
-
-                anchorIndex = layer.dataProvider().fieldNameIndex("anchor_point")
-                if anchorIndex != -1:
-                    print("layer STILL has anchor_point")
 
                 for feature in layer.getFeatures():
                     id_map[layer.name() + ":" + str(feature.id())] = feature["id"]
@@ -742,26 +764,46 @@ class AzureMapsPlugin:
             msg.setInformativeText("Your edits have been saved to the database.")
             msg.setWindowTitle("Save Successful!")
             msg.exec()
-            layer.commitChanges()
         
         floor_index = layer.dataProvider().fieldNameIndex("floor")
 
         # If floor attribute is found, update floor to updated or created value
         if floor_index != -1:
-            for fid in adds:
-                level_id = layer.getFeature(fid)["level_id"]
-                if level_id is not None:
-                    floor = self.level_to_ordinal[level_id]
-                    if floor is not None:
-                        
-                        layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
-        
-            for fid in changes:
-                level_id = layer.getFeature(fid)["level_id"]
-                if level_id is not None:
+            self.update_floors(adds, layer, floor_index)
+            self.update_floors(changes, layer, floor_index)
+            
+    def update_floors(self, new, layer, floor_index):
+        for fid in new:
+                feature = layer.getFeature(fid)
+                if feature.fieldNameIndex("level_id") != -1:
+                    level_id = feature["level_id"]
                     floor = self.level_to_ordinal[level_id]
                     if floor is not None:
                         layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
+                elif feature.fieldNameIndex("unit_id") != -1:
+                    unit_id = feature["unit_id"]
+                    if unit_id is not None:
+                        floor = space_to_floors.get(unit_id, None)
+                        if floor is not None:
+                            layer.changeAttributeValue(layer.getFeature(fid), floor_index, str(floor))
+                elif feature.fieldNameIndex("ordinal") != -1:
+                    print("update ordinal for level")
+                    ordinal = feature["ordinal"]
+                    if ordinal is not None:
+                        layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(ordinal))
+                        self.dlg.floorPicker.clear()
+                        remove = self.level_to_ordinal[feature["id"]]
+                        self.picker_floors.remove(remove)
+                        for feature in layer.getFeatures():
+                            ordinal = feature["ordinal"]
+                            if ordinal not in self.picker_floors:
+                                self.picker_floors.append(ordinal)
+                        self.picker_floors.sort()
+                        for ordinal in self.picker_floors:
+                            self.dlg.floorPicker.addItem(str(ordinal))
+                        self.level_to_ordinal[feature["id"]] = feature["ordinal"]
+                        del self.ordinal_to_level[remove]
+                        self.ordinal_to_level[feature["ordinal"]] = feature["id"]
 
     #def authenticate_device_code(self, tenant, client_id):
 

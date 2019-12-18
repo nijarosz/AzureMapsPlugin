@@ -1,21 +1,21 @@
 <!DOCTYPE qgis-layer-definition>
 <qlr>
-  <layer-tree-group checked="Qt::Checked" expanded="1" name="">
+  <layer-tree-group name="" checked="Qt::Checked" expanded="1">
     <customproperties/>
-    <layer-tree-layer providerKey="memory" id="vertical_penetration_6d32191f_8c86_4426_bfe6_d4e6b4e3d4fd" checked="Qt::Checked" source="memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=set_id:String(0,0)&amp;field=level_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=direction:String(0,0)&amp;field=non_public:Boolean(1,0)&amp;field=navigable_by:String(0,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)" expanded="1" name="vertical_penetration">
+    <layer-tree-layer source="memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=set_id:String(0,0)&amp;field=level_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=direction:String(0,0)&amp;field=non_public:Boolean(1,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)" id="vertical_penetration_b98b9685_69b1_492a_88e4_b78fd067ef7e" providerKey="memory" name="vertical_penetration" checked="Qt::Checked" expanded="1">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
   <maplayers>
-    <maplayer refreshOnNotifyEnabled="0" simplifyDrawingTol="1" simplifyAlgorithm="0" minScale="1e+08" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" geometry="Polygon" autoRefreshTime="0" readOnly="0" simplifyLocal="1" type="vector" styleCategories="AllStyleCategories" maxScale="0" simplifyDrawingHints="1" refreshOnNotifyMessage="" labelsEnabled="0" wkbType="Polygon" simplifyMaxScale="1">
+    <maplayer type="vector" hasScaleBasedVisibilityFlag="0" minScale="1e+08" refreshOnNotifyEnabled="0" simplifyMaxScale="1" autoRefreshTime="0" labelsEnabled="0" refreshOnNotifyMessage="" simplifyAlgorithm="0" maxScale="0" simplifyDrawingTol="1" readOnly="0" simplifyLocal="1" autoRefreshEnabled="0" styleCategories="AllStyleCategories" wkbType="Polygon" geometry="Polygon" simplifyDrawingHints="1">
       <extent>
         <xmin>-122.1325689237349934</xmin>
         <ymin>47.63563445173850397</ymin>
         <xmax>-122.1314935204801202</xmax>
         <ymax>47.63615490157142318</ymax>
       </extent>
-      <id>vertical_penetration_6d32191f_8c86_4426_bfe6_d4e6b4e3d4fd</id>
-      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=set_id:String(0,0)&amp;field=level_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=direction:String(0,0)&amp;field=non_public:Boolean(1,0)&amp;field=navigable_by:String(0,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)</datasource>
+      <id>vertical_penetration_b98b9685_69b1_492a_88e4_b78fd067ef7e</id>
+      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=set_id:String(0,0)&amp;field=level_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=direction:String(0,0)&amp;field=non_public:Boolean(1,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -71,26 +71,26 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <renderer-v2 forceraster="0" type="singleSymbol" symbollevels="0" enableorderby="0">
+      <renderer-v2 enableorderby="0" forceraster="0" symbollevels="0" type="singleSymbol">
         <symbols>
-          <symbol alpha="1" force_rhr="0" clip_to_extent="1" name="0" type="fill">
-            <layer enabled="1" locked="0" pass="0" class="SimpleFill">
-              <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
-              <prop v="133,182,111,255" k="color"/>
-              <prop v="bevel" k="joinstyle"/>
-              <prop v="0,0" k="offset"/>
-              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-              <prop v="MM" k="offset_unit"/>
-              <prop v="35,35,35,255" k="outline_color"/>
-              <prop v="solid" k="outline_style"/>
-              <prop v="0.26" k="outline_width"/>
-              <prop v="MM" k="outline_width_unit"/>
-              <prop v="solid" k="style"/>
+          <symbol force_rhr="0" type="fill" name="0" alpha="1" clip_to_extent="1">
+            <layer locked="0" class="SimpleFill" pass="0" enabled="1">
+              <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="color" v="225,89,137,255"/>
+              <prop k="joinstyle" v="bevel"/>
+              <prop k="offset" v="0,0"/>
+              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="offset_unit" v="MM"/>
+              <prop k="outline_color" v="35,35,35,255"/>
+              <prop k="outline_style" v="solid"/>
+              <prop k="outline_width" v="0.26"/>
+              <prop k="outline_width_unit" v="MM"/>
+              <prop k="style" v="solid"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option value="" name="name" type="QString"/>
+                  <Option type="QString" value="" name="name"/>
                   <Option name="properties"/>
-                  <Option value="collection" name="type" type="QString"/>
+                  <Option type="QString" value="collection" name="type"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -99,13 +99,17 @@
         <rotation/>
         <sizescale/>
       </renderer-v2>
-      <customproperties/>
+      <customproperties>
+        <property key="dualview/previewExpressions">
+          <value>"name"</value>
+        </property>
+      </customproperties>
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
       <layerOpacity>1</layerOpacity>
       <geometryOptions removeDuplicateNodes="0" geometryPrecision="0">
         <activeChecks type="StringList">
-          <Option value="" type="QString"/>
+          <Option type="QString" value=""/>
         </activeChecks>
         <checkConfiguration/>
       </geometryOptions>
@@ -159,13 +163,6 @@
             </config>
           </editWidget>
         </field>
-        <field name="navigable_by">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
         <field name="name">
           <editWidget type="">
             <config>
@@ -189,65 +186,73 @@
         </field>
       </fieldConfiguration>
       <aliases>
-        <alias field="id" name="" index="0"/>
-        <alias field="original_id" name="" index="1"/>
-        <alias field="set_id" name="" index="2"/>
-        <alias field="level_id" name="" index="3"/>
-        <alias field="category_id" name="" index="4"/>
-        <alias field="direction" name="" index="5"/>
-        <alias field="non_public" name="" index="6"/>
-        <alias field="navigable_by" name="" index="7"/>
-        <alias field="name" name="" index="8"/>
-        <alias field="name_subtitle" name="" index="9"/>
-        <alias field="name_alt" name="" index="10"/>
+        <alias field="id" index="0" name=""/>
+        <alias field="original_id" index="1" name=""/>
+        <alias field="set_id" index="2" name=""/>
+        <alias field="level_id" index="3" name=""/>
+        <alias field="category_id" index="4" name=""/>
+        <alias field="direction" index="5" name=""/>
+        <alias field="non_public" index="6" name=""/>
+        <alias field="name" index="8" name=""/>
+        <alias field="name_subtitle" index="9" name=""/>
+        <alias field="name_alt" index="10" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <defaults>
-        <default field="id" expression="" applyOnUpdate="0"/>
-        <default field="original_id" expression="" applyOnUpdate="0"/>
-        <default field="set_id" expression="" applyOnUpdate="0"/>
-        <default field="level_id" expression="" applyOnUpdate="0"/>
-        <default field="category_id" expression="" applyOnUpdate="0"/>
-        <default field="direction" expression="" applyOnUpdate="0"/>
-        <default field="non_public" expression="" applyOnUpdate="0"/>
-        <default field="navigable_by" expression="" applyOnUpdate="0"/>
-        <default field="name" expression="" applyOnUpdate="0"/>
-        <default field="name_subtitle" expression="" applyOnUpdate="0"/>
-        <default field="name_alt" expression="" applyOnUpdate="0"/>
+        <default field="id" applyOnUpdate="0" expression=""/>
+        <default field="original_id" applyOnUpdate="0" expression=""/>
+        <default field="set_id" applyOnUpdate="0" expression=""/>
+        <default field="level_id" applyOnUpdate="0" expression=""/>
+        <default field="category_id" applyOnUpdate="0" expression=""/>
+        <default field="direction" applyOnUpdate="0" expression=""/>
+        <default field="non_public" applyOnUpdate="0" expression=""/>
+        <default field="name" applyOnUpdate="0" expression=""/>
+        <default field="name_subtitle" applyOnUpdate="0" expression=""/>
+        <default field="name_alt" applyOnUpdate="0" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" field="id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="original_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="set_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="level_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="category_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="direction" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="non_public" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="navigable_by" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name_subtitle" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name_alt" exp_strength="0" notnull_strength="0"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="id"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="original_id"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="set_id"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="level_id"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="category_id"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="direction"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="non_public"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="name"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="name_subtitle"/>
+        <constraint unique_strength="0" constraints="0" notnull_strength="0" exp_strength="0" field="name_alt"/>
       </constraints>
       <constraintExpressions>
-        <constraint field="id" exp="" desc=""/>
-        <constraint field="original_id" exp="" desc=""/>
-        <constraint field="set_id" exp="" desc=""/>
-        <constraint field="level_id" exp="" desc=""/>
-        <constraint field="category_id" exp="" desc=""/>
-        <constraint field="direction" exp="" desc=""/>
-        <constraint field="non_public" exp="" desc=""/>
-        <constraint field="navigable_by" exp="" desc=""/>
-        <constraint field="name" exp="" desc=""/>
-        <constraint field="name_subtitle" exp="" desc=""/>
-        <constraint field="name_alt" exp="" desc=""/>
+        <constraint exp="" field="id" desc=""/>
+        <constraint exp="" field="original_id" desc=""/>
+        <constraint exp="" field="set_id" desc=""/>
+        <constraint exp="" field="level_id" desc=""/>
+        <constraint exp="" field="category_id" desc=""/>
+        <constraint exp="" field="direction" desc=""/>
+        <constraint exp="" field="non_public" desc=""/>
+        <constraint exp="" field="name" desc=""/>
+        <constraint exp="" field="name_subtitle" desc=""/>
+        <constraint exp="" field="name_alt" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig sortExpression="" sortOrder="0" actionWidgetStyle="dropDown">
-        <columns/>
+      <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
+        <columns>
+          <column hidden="0" width="-1" type="field" name="id"/>
+          <column hidden="0" width="-1" type="field" name="original_id"/>
+          <column hidden="0" width="-1" type="field" name="set_id"/>
+          <column hidden="0" width="-1" type="field" name="level_id"/>
+          <column hidden="0" width="-1" type="field" name="category_id"/>
+          <column hidden="0" width="-1" type="field" name="direction"/>
+          <column hidden="0" width="-1" type="field" name="non_public"/>
+          <column hidden="0" width="-1" type="field" name="name"/>
+          <column hidden="0" width="-1" type="field" name="name_subtitle"/>
+          <column hidden="0" width="-1" type="field" name="name_alt"/>
+          <column hidden="1" width="-1" type="actions"/>
+        </columns>
       </attributetableconfig>
       <conditionalstyles>
         <rowstyles/>
@@ -265,7 +270,7 @@
 	  </editable>
       <labelOnTop/>
       <widgets/>
-      <previewExpression></previewExpression>
+      <previewExpression>"name"</previewExpression>
       <mapTip></mapTip>
     </maplayer>
   </maplayers>

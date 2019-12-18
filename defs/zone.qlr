@@ -205,7 +205,9 @@
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
-      <editable/>
+      <editable>
+		<field name="id" editable="0"/>
+	  </editable>
       <labelOnTop/>
       <widgets/>
       <previewExpression></previewExpression>

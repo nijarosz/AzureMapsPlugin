@@ -1,15 +1,15 @@
 <!DOCTYPE qgis-layer-definition>
 <qlr>
-  <layer-tree-group checked="Qt::Checked" expanded="1" name="">
+  <layer-tree-group expanded="1" name="" checked="Qt::Checked">
     <customproperties/>
-    <layer-tree-layer providerKey="memory" id="directory_info_2b15fe4a_4221_42c7_96df_8db4a50f08bf" checked="Qt::Checked" source="NoGeometry?crs=&amp;index=yes&amp;uid={d7ca61fc-0a2c-4e95-85a8-81f5a57ab081}" expanded="1" name="directory_info">
+    <layer-tree-layer id="directory_info_6cb0fb4a_7d75_46ac_9496_0e8ce5b05494" expanded="1" name="directory_info" source="NoGeometry?crs=&amp;index=yes&amp;uid={35f82dd3-18a7-48fd-9813-2623e61ea411}" providerKey="memory" checked="Qt::Checked">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
   <maplayers>
-    <maplayer refreshOnNotifyEnabled="0" autoRefreshTime="0" wkbType="NoGeometry" refreshOnNotifyMessage="" styleCategories="AllStyleCategories" type="vector" minScale="1e+08" hasScaleBasedVisibilityFlag="0" maxScale="0" readOnly="0" autoRefreshEnabled="0" geometry="No geometry">
-      <id>directory_info_2b15fe4a_4221_42c7_96df_8db4a50f08bf</id>
-      <datasource>memory?geometry=NoGeometry&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=street_address:String(0,0)&amp;field=unit:String(0,0)&amp;field=locality:String(0,0)&amp;field=admin_divisions:StringList(0,0)&amp;field=postal_code:String(0,0)&amp;field=name:String(0,0)&amp;field=website:String(0,0)&amp;field=hours_of_operation:String(0,0)</datasource>
+    <maplayer refreshOnNotifyEnabled="0" type="vector" geometry="No geometry" maxScale="0" wkbType="NoGeometry" minScale="1e+08" styleCategories="AllStyleCategories" readOnly="0" autoRefreshEnabled="0" autoRefreshTime="0" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0">
+      <id>directory_info_6cb0fb4a_7d75_46ac_9496_0e8ce5b05494</id>
+      <datasource>memory?geometry=NoGeometry&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=street_address:String(0,0)&amp;field=unit:String(0,0)&amp;field=locality:String(0,0)&amp;field=postal_code:String(0,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)&amp;field=phone_number:String(0,0)&amp;field=website:String(0,0)&amp;field=hours_of_operation:String(0,0)</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -68,7 +68,7 @@
       <customproperties/>
       <geometryOptions removeDuplicateNodes="0" geometryPrecision="0">
         <activeChecks type="StringList">
-          <Option value="" type="QString"/>
+          <Option type="QString" value=""/>
         </activeChecks>
         <checkConfiguration/>
       </geometryOptions>
@@ -108,13 +108,6 @@
             </config>
           </editWidget>
         </field>
-        <field name="admin_divisions">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
         <field name="postal_code">
           <editWidget type="">
             <config>
@@ -123,6 +116,27 @@
           </editWidget>
         </field>
         <field name="name">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="name_subtitle">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="name_alt">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="phone_number">
           <editWidget type="">
             <config>
               <Option/>
@@ -150,56 +164,78 @@
         <alias field="street_address" name="" index="2"/>
         <alias field="unit" name="" index="3"/>
         <alias field="locality" name="" index="4"/>
-        <alias field="admin_divisions" name="" index="5"/>
         <alias field="postal_code" name="" index="6"/>
         <alias field="name" name="" index="7"/>
-        <alias field="website" name="" index="8"/>
-        <alias field="hours_of_operation" name="" index="9"/>
+        <alias field="name_subtitle" name="" index="8"/>
+        <alias field="name_alt" name="" index="9"/>
+        <alias field="phone_number" name="" index="10"/>
+        <alias field="website" name="" index="11"/>
+        <alias field="hours_of_operation" name="" index="12"/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <defaults>
-        <default field="id" expression="" applyOnUpdate="0"/>
-        <default field="original_id" expression="" applyOnUpdate="0"/>
-        <default field="street_address" expression="" applyOnUpdate="0"/>
-        <default field="unit" expression="" applyOnUpdate="0"/>
-        <default field="locality" expression="" applyOnUpdate="0"/>
-        <default field="admin_divisions" expression="" applyOnUpdate="0"/>
-        <default field="postal_code" expression="" applyOnUpdate="0"/>
-        <default field="name" expression="" applyOnUpdate="0"/>
-        <default field="website" expression="" applyOnUpdate="0"/>
-        <default field="hours_of_operation" expression="" applyOnUpdate="0"/>
+        <default applyOnUpdate="0" field="id" expression=""/>
+        <default applyOnUpdate="0" field="original_id" expression=""/>
+        <default applyOnUpdate="0" field="street_address" expression=""/>
+        <default applyOnUpdate="0" field="unit" expression=""/>
+        <default applyOnUpdate="0" field="locality" expression=""/>
+        <default applyOnUpdate="0" field="postal_code" expression=""/>
+        <default applyOnUpdate="0" field="name" expression=""/>
+        <default applyOnUpdate="0" field="name_subtitle" expression=""/>
+        <default applyOnUpdate="0" field="name_alt" expression=""/>
+        <default applyOnUpdate="0" field="phone_number" expression=""/>
+        <default applyOnUpdate="0" field="website" expression=""/>
+        <default applyOnUpdate="0" field="hours_of_operation" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" field="id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="original_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="street_address" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="unit" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="locality" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="admin_divisions" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="postal_code" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="website" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="hours_of_operation" exp_strength="0" notnull_strength="0"/>
+        <constraint notnull_strength="0" field="id" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="original_id" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="street_address" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="unit" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="locality" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="postal_code" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="name" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="name_subtitle" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="name_alt" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="phone_number" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="website" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="hours_of_operation" unique_strength="0" exp_strength="0" constraints="0"/>
       </constraints>
       <constraintExpressions>
-        <constraint field="id" exp="" desc=""/>
-        <constraint field="original_id" exp="" desc=""/>
-        <constraint field="street_address" exp="" desc=""/>
-        <constraint field="unit" exp="" desc=""/>
-        <constraint field="locality" exp="" desc=""/>
-        <constraint field="admin_divisions" exp="" desc=""/>
-        <constraint field="postal_code" exp="" desc=""/>
-        <constraint field="name" exp="" desc=""/>
-        <constraint field="website" exp="" desc=""/>
-        <constraint field="hours_of_operation" exp="" desc=""/>
+        <constraint exp="" field="id" desc=""/>
+        <constraint exp="" field="original_id" desc=""/>
+        <constraint exp="" field="street_address" desc=""/>
+        <constraint exp="" field="unit" desc=""/>
+        <constraint exp="" field="locality" desc=""/>
+        <constraint exp="" field="postal_code" desc=""/>
+        <constraint exp="" field="name" desc=""/>
+        <constraint exp="" field="name_subtitle" desc=""/>
+        <constraint exp="" field="name_alt" desc=""/>
+        <constraint exp="" field="phone_number" desc=""/>
+        <constraint exp="" field="website" desc=""/>
+        <constraint exp="" field="hours_of_operation" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig sortExpression="" sortOrder="0" actionWidgetStyle="dropDown">
-        <columns/>
+      <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
+        <columns>
+          <column type="field" name="id" hidden="0" width="-1"/>
+          <column type="field" name="original_id" hidden="0" width="-1"/>
+          <column type="field" name="street_address" hidden="0" width="-1"/>
+          <column type="field" name="unit" hidden="0" width="-1"/>
+          <column type="field" name="locality" hidden="0" width="-1"/>
+          <column type="field" name="postal_code" hidden="0" width="-1"/>
+          <column type="field" name="name" hidden="0" width="-1"/>
+          <column type="field" name="name_subtitle" hidden="0" width="-1"/>
+          <column type="field" name="name_alt" hidden="0" width="-1"/>
+          <column type="field" name="phone_number" hidden="0" width="-1"/>
+          <column type="field" name="website" hidden="0" width="-1"/>
+          <column type="field" name="hours_of_operation" hidden="0" width="-1"/>
+          <column type="actions" hidden="1" width="-1"/>
+        </columns>
       </attributetableconfig>
       <conditionalstyles>
         <rowstyles/>
@@ -215,7 +251,7 @@
       <editable/>
       <labelOnTop/>
       <widgets/>
-      <previewExpression></previewExpression>
+      <previewExpression>"name"</previewExpression>
       <mapTip></mapTip>
     </maplayer>
   </maplayers>

@@ -1,21 +1,21 @@
 <!DOCTYPE qgis-layer-definition>
 <qlr>
-  <layer-tree-group checked="Qt::Checked" expanded="1" name="">
+  <layer-tree-group expanded="1" name="" checked="Qt::Checked">
     <customproperties/>
-    <layer-tree-layer providerKey="memory" id="unit_b5184c56_3037_4eec_912c_003319e974a0" checked="Qt::Checked" source="memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=is_open_area:Boolean(1,0)&amp;field=is_routable:Boolean(1,0)&amp;field=non_public:Boolean(1,0)&amp;field=level_id:String(0,0)&amp;field=address_id:String(0,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)&amp;field=route_through_behavior:String(0,0)&amp;field=address_room_number:String(0,0)" expanded="1" name="unit">
+    <layer-tree-layer id="unit_b5184c56_3037_4eec_912c_003319e974a0" expanded="1" name="unit" source="memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:string(0,0)&amp;field=original_id:string(0,0)&amp;field=category_id:string(0,0)&amp;field=is_open_area:boolean(1,0)&amp;field=is_routable:boolean(1,0)&amp;field=route_through_behavior:string(0,0)&amp;field=non_public:boolean(1,0)&amp;field=level_id:string(0,0)&amp;field=address_id:string(0,0)&amp;field=address_room_number:string(0,0)&amp;field=name:string(0,0)&amp;field=name_subtitle:string(0,0)&amp;field=name_alt:string(0,0)" providerKey="memory" checked="Qt::Checked">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
   <maplayers>
-    <maplayer refreshOnNotifyEnabled="0" simplifyDrawingTol="1" simplifyAlgorithm="0" minScale="1e+08" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" geometry="Polygon" autoRefreshTime="0" readOnly="0" simplifyLocal="1" type="vector" styleCategories="AllStyleCategories" maxScale="0" simplifyDrawingHints="1" refreshOnNotifyMessage="" labelsEnabled="1" wkbType="Polygon" simplifyMaxScale="1">
+    <maplayer autoRefreshEnabled="0" simplifyAlgorithm="0" type="vector" wkbType="Polygon" labelsEnabled="1" simplifyDrawingHints="1" refreshOnNotifyMessage="" maxScale="0" minScale="1e+08" readOnly="0" geometry="Polygon" simplifyMaxScale="1" simplifyLocal="1" autoRefreshTime="0" styleCategories="AllStyleCategories" refreshOnNotifyEnabled="0" simplifyDrawingTol="1" hasScaleBasedVisibilityFlag="0">
       <extent>
-        <xmin>-122.13259402675852527</xmin>
-        <ymin>47.63566070127495067</ymin>
-        <xmax>-122.13146673436277467</xmax>
-        <ymax>47.63615448746129744</ymax>
+        <xmin>-122.12260950136456472</xmin>
+        <ymin>47.64456703547978833</ymin>
+        <xmax>-122.12174013229501668</xmax>
+        <ymax>47.645346850816928</ymax>
       </extent>
       <id>unit_b5184c56_3037_4eec_912c_003319e974a0</id>
-      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=is_open_area:Boolean(1,0)&amp;field=is_routable:Boolean(1,0)&amp;field=route_through_behavior:String(0,0)&amp;field=non_public:Boolean(1,0)&amp;field=level_id:String(0,0)&amp;field=address_id:String(0,0)&amp;field=address_room_number:String(0,0)&amp;field=name:String(0,0)&amp;field=name_subtitle:String(0,0)&amp;field=name_alt:String(0,0)&amp;</datasource>
+      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:string(0,0)&amp;field=original_id:string(0,0)&amp;field=category_id:string(0,0)&amp;field=is_open_area:boolean(1,0)&amp;field=is_routable:boolean(1,0)&amp;field=route_through_behavior:string(0,0)&amp;field=non_public:boolean(1,0)&amp;field=level_id:string(0,0)&amp;field=address_id:string(0,0)&amp;field=address_room_number:string(0,0)&amp;field=name:string(0,0)&amp;field=name_subtitle:string(0,0)&amp;field=name_alt:string(0,0)</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -39,6 +39,15 @@
         <type></type>
         <title></title>
         <abstract></abstract>
+        <contact>
+          <name></name>
+          <organization></organization>
+          <position></position>
+          <voice></voice>
+          <fax></fax>
+          <email></email>
+          <role></role>
+        </contact>
         <links/>
         <fees></fees>
         <encoding></encoding>
@@ -51,10 +60,18 @@
             <description></description>
             <projectionacronym></projectionacronym>
             <ellipsoidacronym></ellipsoidacronym>
-            <geographicflag>false</geographicflag>
+            <geographicflag>true</geographicflag>
           </spatialrefsys>
         </crs>
-        <extent/>
+        <extent>
+          <spatial miny="0" maxy="0" maxz="0" maxx="0" crs="" minx="0" dimensions="2" minz="0"/>
+          <temporal>
+            <period>
+              <start></start>
+              <end></end>
+            </period>
+          </temporal>
+        </extent>
       </resourceMetadata>
       <provider encoding="System">memory</provider>
       <vectorjoins/>
@@ -71,55 +88,58 @@
         <Removable>1</Removable>
         <Searchable>1</Searchable>
       </flags>
-      <renderer-v2 forceraster="0" type="singleSymbol" enableorderby="0" symbollevels="0">
-		<symbols>
-		  <symbol force_rhr="0" type="fill" clip_to_extent="1" name="0" alpha="1">
-			<layer locked="0" pass="0" enabled="1" class="SimpleFill">
-			  <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-			  <prop k="color" v="218,230,244,255"/>
-			  <prop k="joinstyle" v="bevel"/>
-			  <prop k="offset" v="0,0"/>
-			  <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-			  <prop k="offset_unit" v="MM"/>
-			  <prop k="outline_color" v="0,0,0,255"/>
-			  <prop k="outline_style" v="solid"/>
-			  <prop k="outline_width" v="0.05"/>
-			  <prop k="outline_width_unit" v="RenderMetersInMapUnits"/>
-			  <prop k="style" v="solid"/>
-			  <data_defined_properties>
-				<Option type="Map">
-				  <Option type="QString" value="" name="name"/>
-				  <Option name="properties"/>
-				  <Option type="QString" value="collection" name="type"/>
-				</Option>
-			  </data_defined_properties>
-			</layer>
-		  </symbol>
-		</symbols>
-		<rotation/>
-		<sizescale/>
-	  </renderer-v2>
+      <renderer-v2 type="singleSymbol" symbollevels="0" forceraster="0" enableorderby="0">
+        <symbols>
+          <symbol type="fill" alpha="1" name="0" clip_to_extent="1" force_rhr="0">
+            <layer class="SimpleFill" locked="0" pass="0" enabled="1">
+              <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
+              <prop v="218,230,244,255" k="color"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="0,0,0,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0.05" k="outline_width"/>
+              <prop v="RenderMetersInMapUnits" k="outline_width_unit"/>
+              <prop v="solid" k="style"/>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option type="QString" value="" name="name"/>
+                  <Option name="properties"/>
+                  <Option type="QString" value="collection" name="type"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </symbols>
+        <rotation/>
+        <sizescale/>
+      </renderer-v2>
       <labeling type="simple">
         <settings>
-          <text-style fontFamily="Segoe UI Semibold" fontUnderline="0" fontWordSpacing="0" fontLetterSpacing="0" fontWeight="63" textOpacity="1" fontSizeUnit="Point" isExpression="0" fontItalic="0" fontSize="9" previewBkgrdColor="#ffffff" fontStrikeout="0" namedStyle="Regular" fontCapitals="0" fieldName="name" blendMode="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeight="1" textColor="0,0,0,255" useSubstitutions="0">
-            <text-buffer bufferNoFill="1" bufferSizeUnits="Point" bufferOpacity="1" bufferBlendMode="0" bufferDraw="1" bufferSize="1.5" bufferColor="255,255,255,255" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128"/>
-            <background shapeBorderColor="128,128,128,255" shapeRadiiUnit="MM" shapeOffsetY="0" shapeOffsetUnit="MM" shapeRotationType="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeType="0" shapeSVGFile="" shapeFillColor="255,255,255,255" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiY="0" shapeSizeY="0" shapeType="0" shapeBorderWidthUnit="MM" shapeOpacity="1" shapeBlendMode="0" shapeSizeX="0" shapeRotation="0" shapeDraw="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeSizeUnit="MM" shapeBorderWidth="0" shapeRadiiX="0" shapeOffsetX="0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeJoinStyle="64"/>
-            <shadow shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowColor="0,0,0,255" shadowOffsetAngle="135" shadowOffsetUnit="MM" shadowOffsetGlobal="1" shadowRadius="1.5" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowDraw="0" shadowRadiusAlphaOnly="0" shadowOffsetDist="1" shadowOpacity="0.7" shadowScale="100" shadowUnder="0" shadowRadiusUnit="MM" shadowBlendMode="6"/>
+          <text-style fontSize="9" fontStrikeout="0" fontLetterSpacing="0" fieldName="name" blendMode="0" textOpacity="1" useSubstitutions="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" multilineHeight="1" previewBkgrdColor="#ffffff" fontUnderline="0" fontSizeUnit="Point" fontWeight="63" fontCapitals="0" namedStyle="Regular" isExpression="0" textColor="0,0,0,255" fontFamily="Segoe UI Semibold" fontItalic="0" fontWordSpacing="0">
+            <text-buffer bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferBlendMode="0" bufferColor="255,255,255,255" bufferOpacity="1" bufferSizeUnits="Point" bufferSize="1.5" bufferJoinStyle="128"/>
+            <background shapeSizeType="0" shapeFillColor="255,255,255,255" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeBorderColor="128,128,128,255" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetY="0" shapeSVGFile="" shapeRotationType="0" shapeSizeY="0" shapeJoinStyle="64" shapeOffsetX="0" shapeType="0" shapeBlendMode="0" shapeRotation="0" shapeRadiiY="0" shapeBorderWidthUnit="MM" shapeDraw="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeSizeX="0" shapeBorderWidth="0" shapeOpacity="1" shapeRadiiUnit="MM" shapeSizeUnit="MM" shapeRadiiX="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0"/>
+            <shadow shadowRadiusAlphaOnly="0" shadowOpacity="0.7" shadowBlendMode="6" shadowRadius="1.5" shadowOffsetAngle="135" shadowDraw="0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetUnit="MM" shadowOffsetGlobal="1" shadowScale="100" shadowColor="0,0,0,255" shadowOffsetDist="1" shadowRadiusUnit="MM" shadowUnder="0" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0"/>
             <substitutions/>
           </text-style>
-          <text-format leftDirectionSymbol="&lt;" placeDirectionSymbol="0" autoWrapLength="0" addDirectionSymbol="0" rightDirectionSymbol=">" plussign="0" multilineAlign="4294967295" useMaxLineLengthForAutoWrap="1" formatNumbers="0" reverseDirectionSymbol="0" wrapChar="" decimals="3"/>
-          <placement distUnits="MM" quadOffset="4" centroidInside="1" xOffset="0" geometryGeneratorEnabled="0" yOffset="0" maxCurvedCharAngleOut="-25" offsetUnits="MM" maxCurvedCharAngleIn="25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" offsetType="0" distMapUnitScale="3x:0,0,0,0,0,0" geometryGeneratorType="PointGeometry" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" geometryGenerator="" fitInPolygonOnly="1" dist="0" placement="1" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" repeatDistance="0" placementFlags="10" repeatDistanceUnits="MM" preserveRotation="1" centroidWhole="1" rotationAngle="0" priority="5"/>
-          <rendering zIndex="0" obstacleType="0" minFeatureSize="0" upsidedownLabels="0" fontMaxPixelSize="10000" limitNumLabels="0" obstacleFactor="1" fontLimitPixelSize="0" obstacle="1" scaleMax="0" scaleMin="0" drawLabels="1" maxNumLabels="2000" displayAll="0" fontMinPixelSize="3" labelPerPart="0" mergeLines="0" scaleVisibility="0"/>
+          <text-format rightDirectionSymbol=">" reverseDirectionSymbol="0" placeDirectionSymbol="0" wrapChar="" addDirectionSymbol="0" decimals="3" plussign="0" formatNumbers="0" leftDirectionSymbol="&lt;" multilineAlign="4294967295" useMaxLineLengthForAutoWrap="1" autoWrapLength="0"/>
+          <placement maxCurvedCharAngleIn="25" priority="5" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" rotationAngle="0" dist="0" quadOffset="4" distMapUnitScale="3x:0,0,0,0,0,0" repeatDistance="0" yOffset="0" repeatDistanceUnits="MM" placement="1" distUnits="MM" offsetType="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" centroidWhole="1" fitInPolygonOnly="1" geometryGeneratorEnabled="0" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" placementFlags="10" maxCurvedCharAngleOut="-25" xOffset="0" preserveRotation="1" offsetUnits="MM" geometryGenerator="" geometryGeneratorType="PointGeometry" centroidInside="1"/>
+          <rendering mergeLines="0" scaleMax="0" minFeatureSize="0" upsidedownLabels="0" fontMinPixelSize="3" zIndex="0" obstacleFactor="1" scaleMin="0" displayAll="0" drawLabels="1" labelPerPart="0" scaleVisibility="0" limitNumLabels="0" maxNumLabels="2000" obstacle="1" fontLimitPixelSize="0" obstacleType="0" fontMaxPixelSize="10000"/>
           <dd_properties>
             <Option type="Map">
-              <Option value="" name="name" type="QString"/>
+              <Option type="QString" value="" name="name"/>
               <Option name="properties"/>
-              <Option value="collection" name="type" type="QString"/>
+              <Option type="QString" value="collection" name="type"/>
             </Option>
           </dd_properties>
         </settings>
       </labeling>
       <customproperties>
+        <property key="dualview/previewExpressions">
+          <value>"name"</value>
+        </property>
         <property value="0" key="embeddedWidgets/count"/>
         <property key="variableNames"/>
         <property key="variableValues"/>
@@ -127,18 +147,18 @@
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
       <layerOpacity>1</layerOpacity>
-      <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-        <DiagramCategory penWidth="0" enabled="0" backgroundColor="#ffffff" scaleDependency="Area" backgroundAlpha="255" rotationOffset="270" minScaleDenominator="0" height="15" penAlpha="255" sizeScale="3x:0,0,0,0,0,0" labelPlacementMethod="XHeight" minimumSize="0" width="15" opacity="1" maxScaleDenominator="1e+08" lineSizeScale="3x:0,0,0,0,0,0" lineSizeType="MM" scaleBasedVisibility="0" sizeType="MM" penColor="#000000" diagramOrientation="Up" barWidth="5">
-          <fontProperties style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0"/>
-          <attribute field="" label="" color="#000000"/>
+      <SingleCategoryDiagramRenderer attributeLegend="1" diagramType="Histogram">
+        <DiagramCategory penAlpha="255" diagramOrientation="Up" opacity="1" sizeScale="3x:0,0,0,0,0,0" minScaleDenominator="0" backgroundAlpha="255" maxScaleDenominator="1e+08" enabled="0" scaleBasedVisibility="0" height="15" penWidth="0" sizeType="MM" lineSizeType="MM" penColor="#000000" scaleDependency="Area" backgroundColor="#ffffff" rotationOffset="270" width="15" lineSizeScale="3x:0,0,0,0,0,0" minimumSize="0" labelPlacementMethod="XHeight" barWidth="5">
+          <fontProperties description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute color="#000000" label="" field=""/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
-      <DiagramLayerSettings showAll="1" dist="0" placement="1" linePlacementFlags="18" priority="0" obstacle="0" zIndex="0">
+      <DiagramLayerSettings placement="1" showAll="1" dist="0" obstacle="0" linePlacementFlags="18" priority="0" zIndex="0">
         <properties>
           <Option type="Map">
-            <Option value="" name="name" type="QString"/>
+            <Option type="QString" value="" name="name"/>
             <Option name="properties"/>
-            <Option value="collection" name="type" type="QString"/>
+            <Option type="QString" value="collection" name="type"/>
           </Option>
         </properties>
       </DiagramLayerSettings>
@@ -150,7 +170,10 @@
         <field name="id">
           <editWidget type="TextEdit">
             <config>
-              <Option/>
+              <Option type="Map">
+                <Option type="bool" value="false" name="IsMultiline"/>
+                <Option type="bool" value="false" name="UseHtml"/>
+              </Option>
             </config>
           </editWidget>
         </field>
@@ -162,41 +185,55 @@
           </editWidget>
         </field>
         <field name="category_id">
-          <editWidget type="">
+          <editWidget type="TextEdit">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="is_open_area">
-          <editWidget type="">
+          <editWidget type="CheckBox">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="is_routable">
-          <editWidget type="">
+          <editWidget type="CheckBox">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="route_through_behavior">
+          <editWidget type="TextEdit">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="non_public">
-          <editWidget type="">
+          <editWidget type="CheckBox">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="level_id">
-          <editWidget type="">
+          <editWidget type="TextEdit">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="address_id">
+          <editWidget type="TextEdit">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="address_room_number">
           <editWidget type="TextEdit">
             <config>
               <Option/>
@@ -211,28 +248,21 @@
           </editWidget>
         </field>
         <field name="name_subtitle">
-          <editWidget type="">
+          <editWidget type="TextEdit">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="name_alt">
-          <editWidget type="">
+          <editWidget type="TextEdit">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
-        <field name="route_through_behavior">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
-        <field name="address_room_number">
-          <editWidget type="">
+        <field name="floor">
+          <editWidget type="TextEdit">
             <config>
               <Option/>
             </config>
@@ -245,85 +275,143 @@
         <alias field="category_id" name="" index="2"/>
         <alias field="is_open_area" name="" index="3"/>
         <alias field="is_routable" name="" index="4"/>
-        <alias field="non_public" name="" index="5"/>
-        <alias field="level_id" name="" index="6"/>
+        <alias field="route_through_behavior" name="" index="5"/>
+        <alias field="non_public" name="" index="6"/>
+        <alias field="level_id" name="" index="7"/>
         <alias field="address_id" name="" index="8"/>
-        <alias field="name" name="" index="9"/>
-        <alias field="name_subtitle" name="" index="10"/>
-        <alias field="name_alt" name="" index="11"/>
-        <alias field="route_through_behavior" name="" index="13"/>
-        <alias field="address_room_number" name="" index="14"/>
+        <alias field="address_room_number" name="" index="9"/>
+        <alias field="name" name="" index="10"/>
+        <alias field="name_subtitle" name="" index="11"/>
+        <alias field="name_alt" name="" index="12"/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <defaults>
-        <default field="id" expression="" applyOnUpdate="0"/>
-        <default field="original_id" expression="" applyOnUpdate="0"/>
-        <default field="category_id" expression="" applyOnUpdate="0"/>
-        <default field="is_open_area" expression="" applyOnUpdate="0"/>
-        <default field="is_routable" expression="" applyOnUpdate="0"/>
-        <default field="non_public" expression="" applyOnUpdate="0"/>
-        <default field="level_id" expression="" applyOnUpdate="0"/>
-        <default field="address_id" expression="" applyOnUpdate="0"/>
-        <default field="name" expression="" applyOnUpdate="0"/>
-        <default field="name_subtitle" expression="" applyOnUpdate="0"/>
-        <default field="name_alt" expression="" applyOnUpdate="0"/>
-        <default field="route_through_behavior" expression="" applyOnUpdate="0"/>
-        <default field="address_room_number" expression="" applyOnUpdate="0"/>
+        <default applyOnUpdate="0" field="id" expression=""/>
+        <default applyOnUpdate="0" field="original_id" expression=""/>
+        <default applyOnUpdate="0" field="category_id" expression=""/>
+        <default applyOnUpdate="0" field="is_open_area" expression=""/>
+        <default applyOnUpdate="0" field="is_routable" expression=""/>
+        <default applyOnUpdate="0" field="route_through_behavior" expression=""/>
+        <default applyOnUpdate="0" field="non_public" expression=""/>
+        <default applyOnUpdate="0" field="level_id" expression=""/>
+        <default applyOnUpdate="0" field="address_id" expression=""/>
+        <default applyOnUpdate="0" field="address_room_number" expression=""/>
+        <default applyOnUpdate="0" field="name" expression=""/>
+        <default applyOnUpdate="0" field="name_subtitle" expression=""/>
+        <default applyOnUpdate="0" field="name_alt" expression=""/>
       </defaults>
       <constraints>
-        <constraint constraints="0" unique_strength="0" field="id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="original_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="category_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="is_open_area" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="is_routable" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="non_public" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="level_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="address_id" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name_subtitle" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="name_alt" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="route_through_behavior" exp_strength="0" notnull_strength="0"/>
-        <constraint constraints="0" unique_strength="0" field="address_room_number" exp_strength="0" notnull_strength="0"/>
+        <constraint notnull_strength="1" field="id" unique_strength="2" exp_strength="0" constraints="3"/>
+        <constraint notnull_strength="0" field="original_id" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="category_id" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="is_open_area" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="is_routable" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="route_through_behavior" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="non_public" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="1" field="level_id" unique_strength="0" exp_strength="0" constraints="1"/>
+        <constraint notnull_strength="0" field="address_id" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="address_room_number" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="name" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="name_subtitle" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="0" field="name_alt" unique_strength="0" exp_strength="0" constraints="0"/>
       </constraints>
       <constraintExpressions>
-        <constraint field="id" exp="" desc=""/>
-        <constraint field="original_id" exp="" desc=""/>
-        <constraint field="category_id" exp="" desc=""/>
-        <constraint field="is_open_area" exp="" desc=""/>
-        <constraint field="is_routable" exp="" desc=""/>
-        <constraint field="non_public" exp="" desc=""/>
-        <constraint field="level_id" exp="" desc=""/>
-        <constraint field="address_id" exp="" desc=""/>
-        <constraint field="name" exp="" desc=""/>
-        <constraint field="name_subtitle" exp="" desc=""/>
-        <constraint field="name_alt" exp="" desc=""/>
-        <constraint field="route_through_behavior" exp="" desc=""/>
-        <constraint field="address_room_number" exp="" desc=""/>
+        <constraint exp="" field="id" desc=""/>
+        <constraint exp="" field="original_id" desc=""/>
+        <constraint exp="" field="category_id" desc=""/>
+        <constraint exp="" field="is_open_area" desc=""/>
+        <constraint exp="" field="is_routable" desc=""/>
+        <constraint exp="" field="route_through_behavior" desc=""/>
+        <constraint exp="" field="non_public" desc=""/>
+        <constraint exp="" field="level_id" desc=""/>
+        <constraint exp="" field="address_id" desc=""/>
+        <constraint exp="" field="address_room_number" desc=""/>
+        <constraint exp="" field="name" desc=""/>
+        <constraint exp="" field="name_subtitle" desc=""/>
+        <constraint exp="" field="name_alt" desc=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig sortExpression="" sortOrder="0" actionWidgetStyle="dropDown">
-        <columns/>
+      <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
+        <columns>
+          <column type="field" name="id" hidden="0" width="-1"/>
+          <column type="field" name="original_id" hidden="0" width="-1"/>
+          <column type="field" name="category_id" hidden="0" width="-1"/>
+          <column type="field" name="is_open_area" hidden="0" width="-1"/>
+          <column type="field" name="is_routable" hidden="0" width="-1"/>
+          <column type="field" name="route_through_behavior" hidden="0" width="-1"/>
+          <column type="field" name="non_public" hidden="0" width="-1"/>
+          <column type="field" name="level_id" hidden="0" width="-1"/>
+          <column type="field" name="address_id" hidden="0" width="-1"/>
+          <column type="field" name="address_room_number" hidden="0" width="-1"/>
+          <column type="field" name="name" hidden="0" width="-1"/>
+          <column type="field" name="name_subtitle" hidden="0" width="-1"/>
+          <column type="field" name="name_alt" hidden="0" width="-1"/>
+          <column type="actions" hidden="1" width="-1"/>
+        </columns>
       </attributetableconfig>
       <conditionalstyles>
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
+      <editform tolerant="1"></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath></editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
+      <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
+"""
+QGIS forms can have a Python function that is called when the form is
+opened.
+
+Use this function to add extra logic to your forms.
+
+Enter the name of the function in the "Python Init function"
+field.
+An example follows:
+"""
+from qgis.PyQt.QtWidgets import QWidget
+
+def my_form_open(dialog, layer, feature):
+	geom = feature.geometry()
+	control = dialog.findChild(QWidget, "MyLineEdit")
+]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
       <editable>
-		<field name="id" editable="0"/>
-	  </editable>
-      <labelOnTop/>
+        <field editable="1" name="address_id"/>
+        <field editable="1" name="address_room_number"/>
+        <field editable="1" name="category_id"/>
+        <field editable="0" name="id"/>
+        <field editable="1" name="is_open_area"/>
+        <field editable="1" name="is_routable"/>
+        <field editable="1" name="level_id"/>
+        <field editable="1" name="name"/>
+        <field editable="1" name="name_alt"/>
+        <field editable="1" name="name_subtitle"/>
+        <field editable="1" name="non_public"/>
+        <field editable="1" name="original_id"/>
+        <field editable="1" name="route_through_behavior"/>
+      </editable>
+      <labelOnTop>
+        <field labelOnTop="0" name="address_id"/>
+        <field labelOnTop="0" name="address_room_number"/>
+        <field labelOnTop="0" name="category_id"/>
+        <field labelOnTop="0" name="id"/>
+        <field labelOnTop="0" name="is_open_area"/>
+        <field labelOnTop="0" name="is_routable"/>
+        <field labelOnTop="0" name="level_id"/>
+        <field labelOnTop="0" name="name"/>
+        <field labelOnTop="0" name="name_alt"/>
+        <field labelOnTop="0" name="name_subtitle"/>
+        <field labelOnTop="0" name="non_public"/>
+        <field labelOnTop="0" name="original_id"/>
+        <field labelOnTop="0" name="route_through_behavior"/>
+      </labelOnTop>
       <widgets/>
-      <previewExpression></previewExpression>
+      <previewExpression>name</previewExpression>
       <mapTip></mapTip>
     </maplayer>
   </maplayers>

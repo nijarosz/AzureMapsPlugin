@@ -194,7 +194,7 @@
         <default expression="" field="name_alt" applyOnUpdate="0"/>
       </defaults>
       <constraints>
-        <constraint constraints="0" exp_strength="0" field="id" unique_strength="0" notnull_strength="0"/>
+        <constraint notnull_strength="1" field="id" unique_strength="2" exp_strength="0" constraints="3"/>
         <constraint constraints="0" exp_strength="0" field="original_id" unique_strength="0" notnull_strength="0"/>
         <constraint constraints="0" exp_strength="0" field="category_id" unique_strength="0" notnull_strength="0"/>
         <constraint constraints="0" exp_strength="0" field="unit_id" unique_strength="0" notnull_strength="0"/>
@@ -241,7 +241,9 @@
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
-      <editable/>
+      <editable>
+		<field name="id" editable="0"/>
+	  </editable>
       <labelOnTop/>
       <widgets/>
       <previewExpression>"name"</previewExpression>
