@@ -571,8 +571,7 @@ class AzureMapsPlugin:
 
 
     def get_next_link(self, r_json):
-        links = r_json["links"]
-
+        print(links)
         for link in links:
             if link["rel"] == "next":
                 return self.patch(link["href"])
@@ -631,33 +630,33 @@ class AzureMapsPlugin:
                 
                 layer.updateFields()
 
-                # Append the temp layer features to the memory layer.
-                layer.startEditing()
+            # Append the temp layer features to the memory layer.
+            layer.startEditing()
 
-                for new_feat in new_layer.getFeatures():
-                    feat = QgsFeature()
-                    #print(feat.attributes())
-                    feat.setFields(new_feat.fields())
-                    for field in new_feat.fields().toList():
-                        feat.setAttribute(new_feat.fieldNameIndex(field.name()), new_feat.attribute(field.name()))
-                    #feat.setAttributes(new_feat.attributes())
-                    feat.setGeometry(new_feat.geometry())
-                    layer.addFeature(feat)
-                # Remove anchor_point and obstruction_area until save is fixed with them
-                attrIndexesToBeRemoved = []
-                obstructionAreaIndex = layer.dataProvider().fieldNameIndex("obstruction_area")
-                if obstructionAreaIndex != -1:
-                    attrIndexesToBeRemoved.append(obstructionAreaIndex)
-                anchorIndex = layer.dataProvider().fieldNameIndex("anchor_point")
-                if anchorIndex != -1:
-                    attrIndexesToBeRemoved.append(anchorIndex)
-                if len(attrIndexesToBeRemoved) != 0:
-                    result = layer.dataProvider().deleteAttributes(attrIndexesToBeRemoved)
-                    layer.updateFields()
-                layer.commitChanges()
+            for new_feat in new_layer.getFeatures():
+                feat = QgsFeature()
+                #print(feat.attributes())
+                feat.setFields(new_feat.fields())
+                for field in new_feat.fields().toList():
+                    feat.setAttribute(new_feat.fieldNameIndex(field.name()), new_feat.attribute(field.name()))
+                #feat.setAttributes(new_feat.attributes())
+                feat.setGeometry(new_feat.geometry())
+                layer.addFeature(feat)
+            # Remove anchor_point and obstruction_area until save is fixed with them
+            attrIndexesToBeRemoved = []
+            obstructionAreaIndex = layer.dataProvider().fieldNameIndex("obstruction_area")
+            if obstructionAreaIndex != -1:
+                attrIndexesToBeRemoved.append(obstructionAreaIndex)
+            anchorIndex = layer.dataProvider().fieldNameIndex("anchor_point")
+            if anchorIndex != -1:
+                attrIndexesToBeRemoved.append(anchorIndex)
+            if len(attrIndexesToBeRemoved) != 0:
+                result = layer.dataProvider().deleteAttributes(attrIndexesToBeRemoved)
+                layer.updateFields()
+            layer.commitChanges()
 
-                for feature in layer.getFeatures():
-                    id_map[layer.name() + ":" + str(feature.id())] = feature["id"]
+            for feature in layer.getFeatures():
+                id_map[layer.name() + ":" + str(feature.id())] = feature["id"]
 
             next_link = self.get_next_link(r.json())
 
