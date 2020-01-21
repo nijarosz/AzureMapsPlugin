@@ -15,7 +15,7 @@
         <ymax>42.39038256607540234</ymax>
       </extent>
       <id>zone_0a4c97b2_4ca2_4a74_a04e_e1ce4b579619</id>
-      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=name:String(0,0)</datasource>
+      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -131,21 +131,11 @@
             </config>
           </editWidget>
         </field>
-        <field name="name">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
       </fieldConfiguration>
       <aliases>
         <alias field="id" name="" index="0"/>
         <alias field="original_id" name="" index="1"/>
         <alias field="category_id" name="" index="2"/>
-        <alias field="name" name="" index="4"/>
-        <alias field="name_subtitle" name="" index="5"/>
-        <alias field="name_alt" name="" index="6"/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
@@ -153,23 +143,16 @@
         <default expression="" field="id" applyOnUpdate="0"/>
         <default expression="" field="original_id" applyOnUpdate="0"/>
         <default expression="" field="category_id" applyOnUpdate="0"/>
-        <default expression="" field="name" applyOnUpdate="0"/>
-        <default expression="" field="name_subtitle" applyOnUpdate="0"/>
-        <default expression="" field="name_alt" applyOnUpdate="0"/>
       </defaults>
       <constraints>
         <constraint exp_strength="0" field="id" constraints="0" unique_strength="0" notnull_strength="0"/>
         <constraint exp_strength="0" field="original_id" constraints="0" unique_strength="0" notnull_strength="0"/>
         <constraint exp_strength="0" field="category_id" constraints="1" unique_strength="0" notnull_strength="1"/>
-        <constraint exp_strength="0" field="name" constraints="1" unique_strength="0" notnull_strength="1"/>
       </constraints>
       <constraintExpressions>
         <constraint desc="" field="id" exp=""/>
         <constraint desc="" field="original_id" exp=""/>
         <constraint desc="" field="category_id" exp=""/>
-        <constraint desc="" field="name" exp=""/>
-        <constraint desc="" field="name_subtitle" exp=""/>
-        <constraint desc="" field="name_alt" exp=""/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>

@@ -195,7 +195,7 @@
         <constraint notnull_strength="0" field="unit" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="locality" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="postal_code" unique_strength="0" exp_strength="0" constraints="0"/>
-        <constraint notnull_strength="0" field="name" unique_strength="0" exp_strength="0" constraints="0"/>
+        <constraint notnull_strength="1" field="name" unique_strength="0" exp_strength="0" constraints="1"/>
         <constraint notnull_strength="0" field="name_subtitle" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="name_alt" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="phone_number" unique_strength="0" exp_strength="0" constraints="0"/>

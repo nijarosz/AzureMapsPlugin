@@ -21,9 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt5.QtCore import Qt, QSettings, QTranslator, qVersion, QCoreApplication, QVariant
-from PyQt5.QtGui import QIcon, QColor
-from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QMessageBox, QDockWidget
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 from qgis.core import *
 
@@ -32,7 +32,7 @@ from .resources import *
 
 # Import the code for the dialog
 from .azure_maps_plugin_dialog import AzureMapsPluginDialog
-from .azure_maps_plugin_floor_picker import AzureMapsFloorPicker
+from .azure_maps_plugin_welcome_message import AzureMapsWelcomeMessage
 
 import os.path
 import requests
@@ -43,10 +43,9 @@ import urllib.parse
 ## AADTokenCredentials for multi-factor authentication
 #from msrestazure.azure_active_directory import AADTokenCredentials
 
-
 class AzureMapsPlugin:
     """QGIS Plugin Implementation."""
-
+    
     def __init__(self, iface):
         """Constructor.
 
@@ -60,7 +59,8 @@ class AzureMapsPlugin:
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
-        locale = QSettings().value('locale/userLocale')[0:2]
+        s = QSettings()
+        locale = s.value('locale/userLocale')[0:2]
         locale_path = os.path.join(
             self.plugin_dir,
             'i18n',
@@ -72,16 +72,25 @@ class AzureMapsPlugin:
 
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
-
+        firstRun = s.value("azureMaps/firstrun", None)
+        if firstRun is None:
+            # Welcome message
+            msg = QMessageBox()
+            msg.setIconPixmap(QPixmap(':/plugins/azure_maps/icon.png'))
+            msg.setText("Welcome to the Azure Maps Plugin!")
+            msg.setInformativeText('<a href="https://review.docs.microsoft.com/en-us/azure/azure-maps/azure-maps-qgis-plugin?branch=pr-en-us-90025">Link to Azure Maps Plugin documentation</a>')
+            msg.setWindowTitle("Azure Maps")
+            msg.exec()
+            s.setValue("azureMaps/firstrun", True)
         # Declare instance attributes
         self.actions = []
-
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
-
+        self.new_feature_list = []
         self.id_map = {}
         self.collection_meta_map = {}
+        self.openedgroups = []
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -95,6 +104,10 @@ class AzureMapsPlugin:
         :returns: Translated version of message.
         :rtype: QString
         """
+        win = QWidget()
+        l1 = QLabel()
+        l1.setPixmap(QPixmap(':/plugins/azure_maps/icon.png'))
+        
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate('AzureMapsPlugin', message)
 
@@ -148,7 +161,6 @@ class AzureMapsPlugin:
             added to self.actions list.
         :rtype: QAction
         """
-
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
         action.triggered.connect(callback)
@@ -186,7 +198,7 @@ class AzureMapsPlugin:
 
         #self.floor_picker_widget = AzureMapsFloorPicker(self.iface, self.iface.mainWindow())
         #self.iface.addDockWidget(Qt.RightDockWidgetArea, self.floor_picker_widget)
-
+            
         # will be set False in run()
         self.first_start = True
 
@@ -213,6 +225,8 @@ class AzureMapsPlugin:
             self.dlg.getFeaturesButton.clicked.connect(self.get_features_clicked)
             self.picker_floors = []
             self.dlg.floorPicker.currentIndexChanged.connect(self.floor_picker_changed)
+        self.dlg.getFeaturesButton.setEnabled(True)
+       
 
         # show the dialog
         self.dlg.show()
@@ -305,11 +319,22 @@ class AzureMapsPlugin:
             root = QgsProject.instance().layerTreeRoot()
             group_name = geodatabase_id + bbox
             group = root.findGroup(group_name)
+            print(group_name)
 
             if group is None:
                 group = root.addGroup(group_name)
+                self.openedgroups.append(group_name)
             else:
                 group.removeAllChildren()
+
+            if len(self.openedgroups) > 1:
+                for opengroup in self.openedgroups:
+                    if opengroup != group_name:
+                        oldgroup = root.findGroup(opengroup)
+                        if oldgroup is not None:
+                            self.iface.messageBar().pushMessage("Error", "Only one dataset can be loaded at once. Please remove group " + opengroup + " and run get features again.", level = Qgis.Critical)
+                            self.dlg.getFeaturesButton.setEnabled(True)
+                            return
 
             # Get features from each collection.
             collections = r.json()["collections"]
@@ -431,16 +456,19 @@ class AzureMapsPlugin:
 
             # Area element layer
             self.add_floors_values(area_element_layer, id_map, self.space_to_floors, collection_meta)
+            self.add_widget(area_element_layer, "name", "TextEdit") 
             self.add_widget(area_element_layer, "name_alt", "TextEdit") 
             self.add_widget(area_element_layer, "name_subtitle", "TextEdit")
 
             # Line element layer
             self.add_floors_values(line_element_layer, id_map, self.space_to_floors, collection_meta)
+            self.add_widget(line_element_layer, "name", "TextEdit") 
             self.add_widget(line_element_layer, "name_alt", "TextEdit") 
             self.add_widget(line_element_layer, "name_subtitle", "TextEdit")
 
             # Point element layer
             self.add_floors_values(point_element_layer, id_map, self.space_to_floors, collection_meta)
+            self.add_widget(point_element_layer, "name", "TextEdit") 
             self.add_widget(point_element_layer, "name_alt", "TextEdit") 
             self.add_widget(point_element_layer, "name_subtitle", "TextEdit")
 
@@ -551,6 +579,7 @@ class AzureMapsPlugin:
     def add_layer_events(self, layer, id_map, collection_meta):
         layer.commitChanges()
         layer.beforeCommitChanges.connect(lambda: self.on_before_commit_changes(layer, id_map))
+        layer.committedFeaturesAdded.connect(lambda: self.committed_features_added(layer, id_map))
         # layer.featuresDeleted.connect(lambda fids: self.on_features_deleted(fids, layer, id_map, collection_meta))
 
 
@@ -571,7 +600,7 @@ class AzureMapsPlugin:
 
 
     def get_next_link(self, r_json):
-        print(links)
+        links = r_json["links"]
         for link in links:
             if link["rel"] == "next":
                 return self.patch(link["href"])
@@ -624,7 +653,6 @@ class AzureMapsPlugin:
                     layer = QgsVectorLayer(wkt + "?crs=" + crs + "&index=yes", name, "memory")
                 # Add fields to layer
                 layer.dataProvider().addAttributes(new_layer.dataProvider().fields().toList())
-                
                 QgsProject.instance().addMapLayer(layer, False)
                 group.addLayer(layer)
                 
@@ -711,6 +739,16 @@ class AzureMapsPlugin:
 
             collection_ids.append(wid)
 
+    # Use this to access newly created feature after Azure Maps successfuly creates a features
+    def committed_features_added(self, layer, id_map):
+        features_to_edit = []
+        features = layer.getFeatures()
+        for feature in features:
+            if feature["id"] in self.new_feature_list and feature.id() > 0:
+                id_map[layer.name() + ":" + str(feature.id())] = feature["id"]                
+        self.new_feature_list = []
+        
+
     def on_before_commit_changes(self, layer, id_map):
         edits = layer.editBuffer()
         deletes = edits.deletedFeatureIds()
@@ -733,13 +771,16 @@ class AzureMapsPlugin:
 
         for fid in adds:
             feature = layer.getFeature(fid)
-            json = '{"action":"create",' + exporter.exportFeature(feature, {}, layer.name().upper() + "0")[1:]
+            json = '{"action":"create",' + exporter.exportFeature(feature, {}, fid)[1:]
             features.append(json)
 
         for fid in changes:
-            wid = id_map[layer.name() + ":" + str(fid)]
             feature = layer.getFeature(fid)
-            json = '{"action":"update",' + exporter.exportFeature(feature, {}, wid)[1:]
+            if fid > 0:
+                wid = id_map[layer.name() + ":" + str(fid)]
+                json = '{"action":"update",' + exporter.exportFeature(feature, {}, wid)[1:]
+            else:
+                json = '{"action":"create",' + exporter.exportFeature(feature, {}, fid)[1:]
             features.append(json)
 
         for fid in deletes:
@@ -775,43 +816,66 @@ class AzureMapsPlugin:
             msg.exec()
         
         floor_index = layer.dataProvider().fieldNameIndex("floor")
-
+        created = None
+        if adds is not None and len(adds) != 0:
+            created = r.json()['createdfeatures']
+            print(r.json())
         # If floor attribute is found, update floor to updated or created value
         if floor_index != -1:
-            self.update_floors(adds, layer, floor_index)
-            self.update_floors(changes, layer, floor_index)
+            self.update_floors(adds, layer, floor_index, created, id_map)
+            self.update_floors(changes, layer, floor_index, created, id_map)
+        else:
+            if created is not None:
+                for fid in adds:
+                    # Update newly created feature with ID from Azure Maps response
+                    id_index = layer.dataProvider().fieldNameIndex("id")
+                    for ids in created:
+                        if int(ids['user_supplied_id']) == fid:
+                            newId = ids['service_assigned_id']
+                            layer.changeAttributeValue(layer.getFeature(fid).id(), id_index, newId)
+                            # Add feature to list to accessed after it's actually created in QGIS (gets and ID above 0)
+                            self.new_feature_list.append(newId)
             
-    def update_floors(self, new, layer, floor_index):
+    def update_floors(self, new, layer, floor_index, created, id_map):
         for fid in new:
-                feature = layer.getFeature(fid)
-                if feature.fieldNameIndex("level_id") != -1:
-                    level_id = feature["level_id"]
-                    floor = self.level_to_ordinal[level_id]
+            feature = layer.getFeature(fid)
+            if feature.fieldNameIndex("level_id") != -1:
+                level_id = feature["level_id"]
+                floor = self.level_to_ordinal[level_id]
+                if floor is not None:
+                    layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
+            elif feature.fieldNameIndex("unit_id") != -1:
+                unit_id = feature["unit_id"]
+                if unit_id is not None:
+                    floor = self.space_to_floors.get(unit_id, None)
                     if floor is not None:
                         layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
-                elif feature.fieldNameIndex("unit_id") != -1:
-                    unit_id = feature["unit_id"]
-                    if unit_id is not None:
-                        floor = self.space_to_floors.get(unit_id, None)
-                        if floor is not None:
-                            layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(floor))
-                elif feature.fieldNameIndex("ordinal") != -1:
-                    ordinal = feature["ordinal"]
-                    if ordinal is not None:
-                        layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(ordinal))
-                        self.dlg.floorPicker.clear()
-                        remove = self.level_to_ordinal[feature["id"]]
-                        self.picker_floors.remove(remove)
-                        for feature in layer.getFeatures():
-                            ordinal = feature["ordinal"]
-                            if ordinal not in self.picker_floors:
-                                self.picker_floors.append(ordinal)
-                        self.picker_floors.sort()
-                        for ordinal in self.picker_floors:
-                            self.dlg.floorPicker.addItem(str(ordinal))
-                        self.level_to_ordinal[feature["id"]] = feature["ordinal"]
-                        del self.ordinal_to_level[remove]
-                        self.ordinal_to_level[feature["ordinal"]] = feature["id"]
+            elif feature.fieldNameIndex("ordinal") != -1:
+                ordinal = feature["ordinal"]
+                if ordinal is not None:
+                    layer.changeAttributeValue(layer.getFeature(fid).id(), floor_index, str(ordinal))
+                    self.dlg.floorPicker.clear()
+                    remove = self.level_to_ordinal[feature["id"]]
+                    self.picker_floors.remove(remove)
+                    for feature in layer.getFeatures():
+                        ordinal = feature["ordinal"]
+                        if ordinal not in self.picker_floors:
+                            self.picker_floors.append(ordinal)
+                    self.picker_floors.sort()
+                    for ordinal in self.picker_floors:
+                        self.dlg.floorPicker.addItem(str(ordinal))
+                    self.level_to_ordinal[feature["id"]] = feature["ordinal"]
+                    del self.ordinal_to_level[remove]
+                    self.ordinal_to_level[feature["ordinal"]] = feature["id"]
+            if created is not None:
+                # Update newly created feature with ID from Azure Maps response
+                id_index = layer.dataProvider().fieldNameIndex("id")
+                for ids in created:
+                    if int(ids['user_supplied_id']) == fid:
+                        newId = ids['service_assigned_id']
+                        layer.changeAttributeValue(layer.getFeature(fid).id(), id_index, newId)
+                        # Add feature to list to be accessed after it's actually created in QGIS (gets and ID above 0)
+                        self.new_feature_list.append(newId)
 
     #def authenticate_device_code(self, tenant, client_id):
 

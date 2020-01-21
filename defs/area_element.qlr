@@ -2,7 +2,7 @@
 <qlr>
   <layer-tree-group name="" expanded="1" checked="Qt::Checked">
     <customproperties/>
-    <layer-tree-layer source="memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)&amp;field=name:String(0,0)" name="area_element" expanded="1" providerKey="memory" id="area_element_ef2fce18_146a_4604_9d13_9d62af5cd866" checked="Qt::Checked">
+    <layer-tree-layer source="memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)" name="area_element" expanded="1" providerKey="memory" id="area_element_ef2fce18_146a_4604_9d13_9d62af5cd866" checked="Qt::Checked">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
@@ -15,7 +15,7 @@
         <ymax>47.63615450440737931</ymax>
       </extent>
       <id>area_element_ef2fce18_146a_4604_9d13_9d62af5cd866</id>
-      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)&amp;field=name:String(0,0)</datasource>
+      <datasource>memory?geometry=Polygon&amp;crs=EPSG:4326&amp;index=yes&amp;field=id:String(0,0)&amp;field=original_id:String(0,0)&amp;field=category_id:String(0,0)&amp;field=unit_id:String(0,0)&amp;field=is_obstruction:Boolean(1,0)</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -149,13 +149,6 @@
             </config>
           </editWidget>
         </field>
-        <field name="name">
-          <editWidget type="">
-            <config>
-              <Option/>
-            </config>
-          </editWidget>
-        </field>
       </fieldConfiguration>
       <aliases>
         <alias index="0" name="" field="id"/>
@@ -163,7 +156,6 @@
         <alias index="2" name="" field="category_id"/>
         <alias index="3" name="" field="unit_id"/>
         <alias index="4" name="" field="is_obstruction"/>
-        <alias index="5" name="" field="name"/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
@@ -173,7 +165,6 @@
         <default expression="" field="category_id" applyOnUpdate="0"/>
         <default expression="" field="unit_id" applyOnUpdate="0"/>
         <default expression="" field="is_obstruction" applyOnUpdate="0"/>
-        <default expression="" field="name" applyOnUpdate="0"/>
       </defaults>
       <constraints>
         <constraint notnull_strength="0" field="id" unique_strength="2" exp_strength="0" constraints="2"/>
@@ -181,7 +172,6 @@
         <constraint constraints="1" exp_strength="0" field="category_id" unique_strength="0" notnull_strength="1"/>
         <constraint constraints="1" exp_strength="0" field="unit_id" unique_strength="0" notnull_strength="1"/>
         <constraint constraints="0" exp_strength="0" field="is_obstruction" unique_strength="0" notnull_strength="0"/>
-        <constraint constraints="1" exp_strength="0" field="name" unique_strength="0" notnull_strength="1"/>
       </constraints>
       <constraintExpressions>
         <constraint exp="" desc="" field="id"/>
@@ -189,7 +179,6 @@
         <constraint exp="" desc="" field="category_id"/>
         <constraint exp="" desc="" field="unit_id"/>
         <constraint exp="" desc="" field="is_obstruction"/>
-        <constraint exp="" desc="" field="name"/>
       </constraintExpressions>
       <expressionfields/>
       <attributeactions>
@@ -202,7 +191,6 @@
           <column type="field" name="category_id" hidden="0" width="-1"/>
           <column type="field" name="unit_id" hidden="0" width="-1"/>
           <column type="field" name="is_obstruction" hidden="0" width="-1"/>
-          <column type="field" name="name" hidden="0" width="-1"/>
           <column type="actions" hidden="1" width="-1"/>
         </columns>
       </attributetableconfig>
