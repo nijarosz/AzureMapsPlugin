@@ -72,6 +72,7 @@ class AzureMapsPlugin:
 
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
+                
         firstRun = s.value("azureMaps/firstrun", None)
         if firstRun is None:
             # Welcome message
@@ -205,6 +206,7 @@ class AzureMapsPlugin:
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
+        
         for action in self.actions:
             self.iface.removePluginVectorMenu(
                 self.tr(u'Azure Maps'),
@@ -216,7 +218,7 @@ class AzureMapsPlugin:
 
     def run(self):
         """Run method that performs all the real work"""
-
+        
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
         if self.first_start == True:
@@ -248,8 +250,7 @@ class AzureMapsPlugin:
                         layer.setSubsetString("array_contains(levels, '"+self.ordinal_to_level[int(ordinal)]+"')")
         return
 
-                            
-
+                        
 
     def set_private_atlas_status(self, status):
         self.dlg.privateAtlasStatus.setText(status)

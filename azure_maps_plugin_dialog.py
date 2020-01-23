@@ -27,7 +27,9 @@ import webbrowser
 
 from PyQt5 import uic
 from PyQt5 import QtWidgets
-from qgis.core import QgsSettings, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsProject, QgsRectangle
+from qgis.core import *
+from PyQt5.QtWidgets import *
+
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -47,6 +49,7 @@ class AzureMapsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
         self.iface = iface
 
         self.getFeaturesButton.clicked.connect(self.on_get_features_clicked)
+        self.closeButton.clicked.connect(self.closeClicked)
         self.currentExtentButton.clicked.connect(self.on_current_extent_clicked)
         self.allExtentButton.clicked.connect(self.on_all_extent_clicked)
         #self.adButton.clicked.connect(self.on_ad_button_clicked)
@@ -105,6 +108,11 @@ class AzureMapsPluginDialog(QtWidgets.QDialog, FORM_CLASS):
 
     def on_get_features_clicked(self):
         self.saveSettings()
+
+    def closeClicked(self):
+        app = QApplication.instance()
+        featureBox = app.activeWindow()
+        featureBox.close()
 
     def on_current_extent_clicked(self):
 

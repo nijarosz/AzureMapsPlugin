@@ -8,11 +8,11 @@
 name=Azure Maps
 qgisMinimumVersion=3.8
 description=Provides access to Azure Maps services and data
-version=0.7
+version=0.8
 author=Microsoft Corporation
 email=nijarosz@microsoft.com
 
-about=Provides read/write access to Azure Maps private map feature data.
+about=Provides read/write access to Azure Maps private map feature data. Azure Maps documentation: https://review.docs.microsoft.com/en-us/azure/azure-maps/azure-maps-qgis-plugin?branch=pr-en-us-90025
 
 tracker=http://bugs
 repository=http://repo

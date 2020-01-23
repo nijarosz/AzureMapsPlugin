@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>336</width>
+    <width>372</width>
     <height>536</height>
    </rect>
   </property>
@@ -275,6 +275,13 @@ S</string>
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QPushButton" name="closeButton">
+           <property name="text">
+            <string>Close</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -349,17 +356,17 @@ S</string>
           <string>Floor Picker</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-        <widget class="QLabel" name="label_2">
-        <property name="text">
-        <string>Floor ordinal</string>
-        </property>
-        </widget>
-        </item>
-        <item>
-        <widget class="QComboBox" name="floorPicker"/>
-        </item>
-        </layout>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Floor ordinal</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="floorPicker"/>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
