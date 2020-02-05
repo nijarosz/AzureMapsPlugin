@@ -185,21 +185,21 @@
           </editWidget>
         </field>
         <field name="category_id">
-          <editWidget type="TextEdit">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="level_id">
-          <editWidget type="TextEdit">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="address_id">
-          <editWidget type="TextEdit">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
@@ -246,14 +246,14 @@
         <default applyOnUpdate="0" field="name_alt" expression=""/>
       </defaults>
       <constraints>
-        <constraint notnull_strength="0" field="id" unique_strength="2" exp_strength="0" constraints="2"/>
+        <constraint notnull_strength="0" field="id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="original_id" unique_strength="0" exp_strength="0" constraints="0"/>
-        <constraint notnull_strength="1" field="category_id" unique_strength="0" exp_strength="0" constraints="1"/>
+        <constraint notnull_strength="0" field="category_id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="is_open_area" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="is_routable" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="route_through_behavior" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="non_public" unique_strength="0" exp_strength="0" constraints="0"/>
-        <constraint notnull_strength="1" field="level_id" unique_strength="0" exp_strength="0" constraints="1"/>
+        <constraint notnull_strength="0" field="level_id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="address_id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="0" field="address_room_number" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint notnull_strength="1" field="name" unique_strength="0" exp_strength="0" constraints="1"/>
@@ -283,13 +283,13 @@
         <columns>
           <column type="field" name="id" hidden="0" width="-1"/>
           <column type="field" name="original_id" hidden="0" width="-1"/>
-          <column type="field" name="category_id" hidden="0" width="-1"/>
+          <column type="field" name="category_id" hidden="1" width="-1"/>
           <column type="field" name="is_open_area" hidden="0" width="-1"/>
           <column type="field" name="is_routable" hidden="0" width="-1"/>
           <column type="field" name="route_through_behavior" hidden="0" width="-1"/>
           <column type="field" name="non_public" hidden="0" width="-1"/>
           <column type="field" name="level_id" hidden="0" width="-1"/>
-          <column type="field" name="address_id" hidden="0" width="-1"/>
+          <column type="field" name="address_id" hidden="1" width="-1"/>
           <column type="field" name="address_room_number" hidden="0" width="-1"/>
           <column type="field" name="name" hidden="0" width="-1"/>
           <column type="field" name="name_subtitle" hidden="0" width="-1"/>

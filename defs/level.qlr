@@ -145,7 +145,7 @@
           </editWidget>
         </field>
         <field name="facility_id">
-          <editWidget type="">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>

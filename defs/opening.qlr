@@ -147,14 +147,14 @@
           </editWidget>
         </field>
         <field name="category_id">
-          <editWidget type="">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="level_id">
-          <editWidget type="">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
@@ -198,7 +198,7 @@
       <constraints>
         <constraint notnull_strength="0" field="id" unique_strength="2" exp_strength="0" constraints="2"/>
         <constraint constraints="0" exp_strength="0" field="original_id" unique_strength="0" notnull_strength="0"/>
-        <constraint constraints="1" exp_strength="0" field="category_id" unique_strength="0" notnull_strength="1"/>
+        <constraint constraints="0" exp_strength="0" field="category_id" unique_strength="0" notnull_strength="0"/>
         <constraint constraints="0" exp_strength="0" field="level_id" unique_strength="0" notnull_strength="0"/>
         <constraint constraints="0" exp_strength="0" field="is_connected_to_vertical_penetration" unique_strength="0" notnull_strength="0"/>
         <constraint constraints="0" exp_strength="0" field="is_emergency" unique_strength="0" notnull_strength="0"/>

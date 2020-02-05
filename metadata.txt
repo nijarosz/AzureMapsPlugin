@@ -8,7 +8,7 @@
 name=Azure Maps
 qgisMinimumVersion=3.8
 description=Provides access to Azure Maps services and data
-version=0.8
+version=0.9
 author=Microsoft Corporation
 email=nijarosz@microsoft.com
 

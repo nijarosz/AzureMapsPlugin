@@ -130,14 +130,14 @@
           </editWidget>
         </field>
         <field name="category_id">
-          <editWidget type="">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
           </editWidget>
         </field>
         <field name="unit_id">
-          <editWidget type="">
+          <editWidget type="Hidden">
             <config>
               <Option/>
             </config>
@@ -170,8 +170,8 @@
       <constraints>
         <constraint notnull_strength="0" field="id" unique_strength="0" exp_strength="0" constraints="0"/>
         <constraint exp_strength="0" field="original_id" constraints="0" unique_strength="0" notnull_strength="0"/>
-        <constraint exp_strength="0" field="category_id" constraints="1" unique_strength="0" notnull_strength="1"/>
-        <constraint exp_strength="0" field="unit_id" constraints="1" unique_strength="0" notnull_strength="1"/>
+        <constraint exp_strength="0" field="category_id" constraints="0" unique_strength="0" notnull_strength="0"/>
+        <constraint exp_strength="0" field="unit_id" constraints="0" unique_strength="0" notnull_strength="0"/>
         <constraint exp_strength="0" field="is_obstruction" constraints="0" unique_strength="0" notnull_strength="0"/>
       </constraints>
       <constraintExpressions>

@@ -88,10 +88,12 @@ class AzureMapsPlugin:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
+        self.schema_map = {}
         self.new_feature_list = []
         self.id_map = {}
         self.collection_meta_map = {}
         self.openedgroups = []
+        self.relation_map = {}
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -340,7 +342,7 @@ class AzureMapsPlugin:
             # Get features from each collection.
             collections = r.json()["collections"]
             level_layer = None
-            category_level = None
+            category_layer = None
             directory_info_layer = None
             unit_layer = None
             area_element_layer = None
@@ -375,13 +377,20 @@ class AzureMapsPlugin:
 
                 # Get metadata.
                 href = self.patch(meta_link["href"])
+                
                 r = self.get_url(href)
+                response = r.json()
+                properties = response["properties"]
+                names = []
+                for attrs in  properties:
+                    names.append(attrs["name"])
+                self.schema_map[name] = names
 
                 if r.status_code != 200:
                     self.iface.messageBar().pushMessage("Error", "Unable to read collection metadata. Response status code " + str(r.status_code) + ". " + r.text, level = Qgis.Critical)
                     continue
 
-                collection_meta[name] = r.json()
+                collection_meta[name] = response
 
                 # Get collection items.
                 href = self.patch(data_link["href"])
@@ -395,7 +404,7 @@ class AzureMapsPlugin:
                 if name == "level":
                     level_layer = layer
                 elif name == "category":
-                    category_level = layer
+                    category_layer = layer
                 elif name == "directory_info":
                     directory_info_layer = layer
                 elif name == "unit":
@@ -418,36 +427,59 @@ class AzureMapsPlugin:
                 self.set_private_atlas_status("One or more required collections is missing. Please try again")
                 self.dlg.getFeaturesButton.setEnabled(True)
                 return
+            
             self.set_private_atlas_status("Adding private atlas attributes")
-
+            
+            # Populate relational map
+            self.relation_map["category"] = "category_id"
+            self.relation_map["unit"] = "unit_id"
+            self.relation_map["level"] = "level_id"
+            self.relation_map["facility"] = "facility_id"
+            self.relation_map["address"] = "address_id"
+            self.relation_map["levels_reached"] = "levels"
+            
+            # Setup Configs
+            category_config = {"Layer": category_layer, "LayerName" : category_layer.name(), "Key" : "id", "Value" : "name" }
+            unit_config = {"Layer": unit_layer, "LayerName" : unit_layer.name(), "Key" : "id", "Value" : "name"}
+            level_config = {"Layer": level_layer, "LayerName" : level_layer.name(), "Key" : "id", "Value" : "name"}
+            levels_config = {"Layer": level_layer, "LayerName" : level_layer.name(), "Key" : "id", "Value" : "name", "AllowMulti" : True}
+            facility_config = {"Layer": facility_layer, "LayerName" : facility_layer.name(), "Key" : "id", "Value" : "name"}
+            directory_config = {"Layer": directory_info_layer, "LayerName" : directory_info_layer.name(), "Key" : "id", "Value" : "name"}
+            
             self.level_to_ordinal = {level["id"]: level["ordinal"] for level in level_layer.getFeatures()}
             self.ordinal_to_level = {level["ordinal"]: level["id"] for level in level_layer.getFeatures()}
+            
             # Level layer
             floor_index = self.add_helper_attributes(level_layer)
+            fac_index = self.add_widget(level_layer, "facility", "ValueRelation", facility_config)
             for feature in level_layer.getFeatures():
                 level_layer.changeAttributeValue(feature.id(), floor_index, str(feature["ordinal"]))
+                level_layer.changeAttributeValue(feature.id(), fac_index, feature.attribute(self.relation_map["facility"]))
                 ordinal = feature["ordinal"]
-
                 if ordinal not in self.picker_floors:
                     self.picker_floors.append(ordinal)
-
-            self.add_layer_events(level_layer, id_map, collection_meta)
             self.add_widget(level_layer, "name_alt", "TextEdit") 
             self.add_widget(level_layer, "name_subtitle", "TextEdit")
             level_layer.loadNamedStyle(self.plugin_dir + "/styles/level.qml")
+            self.add_layer_events(level_layer, id_map, collection_meta)
 
-            # Space layer
+            # Unit layer
             floor_index = self.add_helper_attributes(unit_layer)
             self.space_to_floors = {}
             space_to_ordinals = {}
+            cat_index = self.add_widget(unit_layer, "category", "ValueRelation", category_config)
+            lvl_index = self.add_widget(unit_layer, "level", "ValueRelation", level_config)
+            dir_index = self.add_widget(unit_layer, "address", "ValueRelation", directory_config)
             for feature in unit_layer.getFeatures():
                 level_id = feature["level_id"]
                 ordinal = self.level_to_ordinal[level_id]
                 floor = ordinal
                 unit_layer.changeAttributeValue(feature.id(), floor_index, floor)
+                unit_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                unit_layer.changeAttributeValue(feature.id(), lvl_index, feature.attribute(self.relation_map["level"]))
+                unit_layer.changeAttributeValue(feature.id(), dir_index, feature.attribute(self.relation_map["address"]))
                 self.space_to_floors[feature["id"]] = floor
-                space_to_ordinals[feature["id"]] = ordinal
-
+                space_to_ordinals[feature["id"]] = ordinal            
             self.add_widget(unit_layer, "navigable_by", "List")  
             self.add_layer_events(unit_layer, id_map, collection_meta)
             #unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
@@ -456,62 +488,101 @@ class AzureMapsPlugin:
             #unit_layer.setEditorWidgetSetup(4, list_widget)
 
             # Area element layer
-            self.add_floors_values(area_element_layer, id_map, self.space_to_floors, collection_meta)
+            cat_index = self.add_widget(area_element_layer, "category", "ValueRelation", category_config)
+            unit_index = self.add_widget(area_element_layer, "unit", "ValueRelation", unit_config)
+            for feature in area_element_layer.getFeatures():
+                area_element_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                area_element_layer.changeAttributeValue(feature.id(), unit_index, feature.attribute(self.relation_map["unit"])) 
             self.add_widget(area_element_layer, "name", "TextEdit") 
             self.add_widget(area_element_layer, "name_alt", "TextEdit") 
             self.add_widget(area_element_layer, "name_subtitle", "TextEdit")
+            self.add_floors_values(area_element_layer, id_map, self.space_to_floors, collection_meta)
 
             # Line element layer
-            self.add_floors_values(line_element_layer, id_map, self.space_to_floors, collection_meta)
+            cat_index = self.add_widget(line_element_layer, "category", "ValueRelation", category_config)
+            unit_index = self.add_widget(line_element_layer, "unit", "ValueRelation", unit_config)
+            for feature in line_element_layer.getFeatures():
+                line_element_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                line_element_layer.changeAttributeValue(feature.id(), unit_index, feature.attribute(self.relation_map["unit"]))
             self.add_widget(line_element_layer, "name", "TextEdit") 
             self.add_widget(line_element_layer, "name_alt", "TextEdit") 
             self.add_widget(line_element_layer, "name_subtitle", "TextEdit")
+            self.add_floors_values(line_element_layer, id_map, self.space_to_floors, collection_meta)
+            
 
             # Point element layer
+            cat_index = self.add_widget(point_element_layer, "category", "ValueRelation", category_config)
+            unit_index = self.add_widget(point_element_layer, "unit", "ValueRelation", unit_config)
+            for feature in point_element_layer.getFeatures():
+                point_element_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                point_element_layer.changeAttributeValue(feature.id(), unit_index, feature.attribute(self.relation_map["unit"]))
             self.add_floors_values(point_element_layer, id_map, self.space_to_floors, collection_meta)
             self.add_widget(point_element_layer, "name", "TextEdit") 
             self.add_widget(point_element_layer, "name_alt", "TextEdit") 
             self.add_widget(point_element_layer, "name_subtitle", "TextEdit")
+            
 
             # Vertical Penetration layer
             if vertical_penetration_layer is not None:
                 floor_index = self.add_helper_attributes(vertical_penetration_layer)
+                cat_index = self.add_widget(vertical_penetration_layer, "category", "ValueRelation", category_config)
+                lvl_index = self.add_widget(vertical_penetration_layer, "level", "ValueRelation", level_config)
                 for feature in vertical_penetration_layer.getFeatures():
                     level_id = feature["level_id"]
                     floor = self.level_to_ordinal[level_id]
                     vertical_penetration_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
+                    vertical_penetration_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                    vertical_penetration_layer.changeAttributeValue(feature.id(), lvl_index, feature.attribute(self.relation_map["level"]))
                 self.add_widget(vertical_penetration_layer, "navigable_by", "List") 
                 self.add_layer_events(vertical_penetration_layer, id_map, collection_meta)
 
             # Opening layer
             if opening_layer is not None:
                 floor_index = self.add_helper_attributes(opening_layer)
+                cat_index = self.add_widget(opening_layer, "category", "ValueRelation", category_config)
+                lvl_index = self.add_widget(opening_layer, "level", "ValueRelation", level_config)
                 for feature in opening_layer.getFeatures():
                     level_id = feature["level_id"]
                     floor = self.level_to_ordinal[level_id]
                     opening_layer.changeAttributeValue(feature.id(), floor_index, str(floor))
+                    opening_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                    opening_layer.changeAttributeValue(feature.id(), lvl_index, feature.attribute(self.relation_map["level"]))
                 self.add_widget(opening_layer, "navigable_by", "List")  
                 self.add_widget(opening_layer, "access_right_to_left", "List")  
                 self.add_widget(opening_layer, "access_left_to_right", "List")  
-                self.add_layer_events(opening_layer, id_map, collection_meta)
                 opening_layer.loadNamedStyle(self.plugin_dir + "/styles/opening.qml")
+                self.add_layer_events(opening_layer, id_map, collection_meta)
 
+            # Facility layer
             if facility_layer is not None:
+                cat_index = self.add_widget(facility_layer, "category", "ValueRelation", category_config)
+                dir_index = self.add_widget(facility_layer, "address", "ValueRelation", directory_config)
+                for feature in facility_layer.getFeatures():
+                    facility_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                    facility_layer.changeAttributeValue(feature.id(), dir_index, feature.attribute(self.relation_map["address"]))
                 self.add_widget(facility_layer, "occupants", "List") 
                 self.add_layer_events(facility_layer, id_map, collection_meta)
 
-            if category_level is not None:
-                self.add_layer_events(category_level, id_map, collection_meta)
+            # Category Layer
+            if category_layer is not None:
+                self.add_layer_events(category_layer, id_map, collection_meta)
 
+            # Directory Info layer
             if directory_info_layer is not None:
                 self.add_widget(directory_info_layer, "admin_divisions", "List") 
                 self.add_layer_events(directory_info_layer, id_map, collection_meta)
 
+            # Zone layer
             if zone_layer is not None:
+                cat_index = self.add_widget(zone_layer, "category", "ValueRelation", category_config)
+                lvls_index = self.add_widget(zone_layer, "levels_reached", "ValueRelation", levels_config)
+                for feature in zone_layer.getFeatures():
+                    zone_layer.changeAttributeValue(feature.id(), cat_index, feature.attribute(self.relation_map["category"]))
+                    zone_layer.changeAttributeValue(feature.id(), lvls_index, feature.attribute(self.relation_map["levels_reached"]))
                 self.add_widget(zone_layer, "name_alt", "TextEdit") 
                 self.add_widget(zone_layer, "name_subtitle", "TextEdit")
                 self.add_widget(zone_layer, "levels", "List")  
-                self.add_layer_events(zone_layer, id_map, collection_meta)
+                self.add_layer_events(zone_layer, id_map, collection_meta)    
 
             # Floor picker
             self.picker_floors.sort()
@@ -532,15 +603,17 @@ class AzureMapsPlugin:
             self.dlg.getFeaturesButton.setEnabled(True)
             
 
-    def add_widget(self, layer, fieldName, widgetType):
+    def add_widget(self, layer, fieldName, widgetType, config = {}):
         levelsIndex = layer.dataProvider().fieldNameIndex(fieldName)
         if levelsIndex == -1:
             layer.startEditing()
-            list_widget = QgsEditorWidgetSetup(widgetType, {})
+            widget = QgsEditorWidgetSetup(widgetType, config)
             field = QgsField(fieldName, QVariant.String)
             layer.dataProvider().addAttributes([field])        
             layer.updateFields()
-            layer.setEditorWidgetSetup(layer.dataProvider().fieldNameIndex(fieldName), list_widget)  
+            layer.setEditorWidgetSetup(layer.dataProvider().fieldNameIndex(fieldName), widget) 
+            return layer.dataProvider().fieldNameIndex(fieldName)
+        return levelsIndex
 
     # Adds floors and name attributes and returns the index of the first field added (floors).
     def add_helper_attributes(self, layer):
@@ -766,16 +839,38 @@ class AzureMapsPlugin:
 
         for fid in deletes:
             changes.discard(fid)
-
         exporter = QgsJsonExporter(layer, 7)
+        if len(changes) != 0  or len(adds) != 0:
+            fid = 0
+            feature = None
+            if len(changes) != 0:
+                for f in changes:
+                    fid = f
+                    break
+            else:
+                for f in adds:
+                    fid = f
+                    break
+            feature = layer.getFeature(fid)
+            includedList= []
+            attributeList = self.schema_map[layer.name()]
+            for attr in attributeList:
+                index = feature.fieldNameIndex(attr)
+                if index != -1:
+                    includedList.append(index)
+            exporter.setAttributes(includedList)
         features = []
 
         for fid in adds:
+            feature = layer.getFeature(fid)
+            self.update_ids(layer, feature)
             feature = layer.getFeature(fid)
             json = '{"action":"create",' + exporter.exportFeature(feature, {}, fid)[1:]
             features.append(json)
 
         for fid in changes:
+            feature = layer.getFeature(fid)
+            self.update_ids(layer, feature)
             feature = layer.getFeature(fid)
             if fid > 0:
                 wid = id_map[layer.name() + ":" + str(fid)]
@@ -820,11 +915,10 @@ class AzureMapsPlugin:
         created = None
         if adds is not None and len(adds) != 0:
             created = r.json()['createdfeatures']
-            print(r.json())
         # If floor attribute is found, update floor to updated or created value
         if floor_index != -1:
-            self.update_floors(adds, layer, floor_index, created, id_map)
-            self.update_floors(changes, layer, floor_index, created, id_map)
+            self.update_floors(adds, layer, floor_index, created)
+            self.update_floors(changes, layer, floor_index, created)
         else:
             if created is not None:
                 for fid in adds:
@@ -837,7 +931,24 @@ class AzureMapsPlugin:
                             # Add feature to list to accessed after it's actually created in QGIS (gets and ID above 0)
                             self.new_feature_list.append(newId)
             
-    def update_floors(self, new, layer, floor_index, created, id_map):
+    def update_ids(self, layer, feature):
+        for key in self.relation_map:
+            #print("key: " + key + " value: " + self.relation_map[key])
+            if feature.fieldNameIndex(key) != -1:
+                # Temp fix until schema is changed - PBI 6216025
+                if key == "levels_reached":
+                    lvl_list = feature.attribute(self.relation_map[key])
+                    lvls_reached = feature.attribute(key)
+                    for lvl in lvls_reached:
+                        if lvl not in lvl_list:
+                            lvl_list.append(lvl)
+                    layer.changeAttributeValue(feature.id(), feature.fieldNameIndex(self.relation_map[key]), lvl_list)
+                else:
+                    layer.changeAttributeValue(feature.id(), feature.fieldNameIndex(self.relation_map[key]), feature.attribute(key))
+                
+            
+    
+    def update_floors(self, new, layer, floor_index, created):
         for fid in new:
             feature = layer.getFeature(fid)
             if feature.fieldNameIndex("level_id") != -1:
