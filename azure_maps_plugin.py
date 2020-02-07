@@ -855,9 +855,10 @@ class AzureMapsPlugin:
             includedList= []
             attributeList = self.schema_map[layer.name()]
             for attr in attributeList:
-                index = feature.fieldNameIndex(attr)
-                if index != -1:
-                    includedList.append(index)
+                if attr != "original_id":
+                    index = feature.fieldNameIndex(attr)
+                    if index != -1:
+                        includedList.append(index)
             exporter.setAttributes(includedList)
         features = []
 
@@ -983,7 +984,7 @@ class AzureMapsPlugin:
                 # Update newly created feature with ID from Azure Maps response
                 id_index = layer.dataProvider().fieldNameIndex("id")
                 for ids in created:
-                    if int(ids['user_supplied_id']) == fid:
+                    if ids['user_supplied_id'] is not None and int(ids['user_supplied_id']) == fid:
                         newId = ids['service_assigned_id']
                         layer.changeAttributeValue(layer.getFeature(fid).id(), id_index, newId)
                         # Add feature to list to be accessed after it's actually created in QGIS (gets and ID above 0)
