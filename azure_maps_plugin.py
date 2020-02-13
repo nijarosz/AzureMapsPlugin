@@ -481,6 +481,7 @@ class AzureMapsPlugin:
                 self.space_to_floors[feature["id"]] = floor
                 space_to_ordinals[feature["id"]] = ordinal            
             self.add_widget(unit_layer, "navigable_by", "List")  
+            self.add_widget(facility_layer, "occupants", "List") 
             self.add_layer_events(unit_layer, id_map, collection_meta)
             #unit_layer.loadNamedStyle(self.plugin_dir + "/styles/space.qml")
 
